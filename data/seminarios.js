@@ -41,7 +41,8 @@ window.SEMINARIOS = [
   {
     id: "historia",
     nombre: "Historia",
-    tema: "Próximamente",
-    textos: []
+    tema: "Descolonización y Tercer Mundo",
+    textos: ["fanon"],
+    orden: "Empieza por la pestaña Contexto: Fanon escribe en 1961, en plena guerra de Argelia, y el texto se entiende mucho mejor sabiendo a qué responde."
   }
 ];

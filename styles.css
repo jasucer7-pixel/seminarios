@@ -172,6 +172,13 @@ details.sec ul { margin: 0 0 14px; padding-left: 20px; display: flex; flex-direc
 .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 16px 18px; }
 .card.soft { background: transparent; }
 
+/* Cronología */
+.timeline { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.timeline li { display: grid; grid-template-columns: 56px 1fr; gap: 14px; padding: 10px 0; border-top: 1px solid var(--line); }
+.timeline li:last-child { border-bottom: 1px solid var(--line); }
+.timeline li > span { min-width: 0; }
+.timeline .yr { font-family: var(--f-mono); font-size: 13px; font-weight: 600; color: var(--accent); font-variant-numeric: tabular-nums; }
+
 /* Esquema del argumento */
 .arg { display: flex; flex-direction: column; gap: 6px; }
 .arg-row { display: grid; grid-template-columns: 44px 1fr; gap: 12px; align-items: baseline; padding: 8px 0; }

@@ -102,7 +102,7 @@
 
   /* ---------- enrutado por hash ---------- */
   var TABS = [
-    ["ruta", "Ruta 20′"], ["resumen", "Resumen"], ["mapa", "Mapa"], ["esquema", "Esquema"],
+    ["ruta", "Ruta 20′"], ["resumen", "Resumen"], ["contexto", "Contexto"], ["mapa", "Mapa"], ["esquema", "Esquema"],
     ["conceptos", "Conceptos"], ["casos", "Casos"], ["debate", "Debate"],
     ["tarjetas", "Tarjetas"], ["test", "Test"], ["ejercicios", "Ejercicios"], ["citas", "Citas"]
   ];
@@ -186,6 +186,7 @@
     ));
     var tabs = h("nav", { class: "tabs", role: "tablist" });
     TABS.forEach(function (tb) {
+      if (tb[0] === "contexto" && !t.cronologia) return;
       var label = tb[1];
       if (tb[0] === "tarjetas") { var d = dueCount(id); if (d && (st(id).ruta || Object.keys(st(id).cards).length)) label += " · " + d; }
       add(tabs, h("button", { class: "tab", role: "tab", "aria-selected": tb[0] === tab ? "true" : "false", onclick: function () { go("t-" + id + "-" + tb[0]); } }, label));
@@ -194,7 +195,7 @@
     var body = h("div", { class: "stack-l" });
     add(app, body);
     var fn = {
-      ruta: tabRuta, resumen: tabResumen, mapa: tabMapa, esquema: tabEsquema, conceptos: tabConceptos,
+      ruta: tabRuta, resumen: tabResumen, contexto: t.cronologia ? tabContexto : null, mapa: tabMapa, esquema: tabEsquema, conceptos: tabConceptos,
       casos: tabCasos, debate: tabDebate, tarjetas: tabTarjetas, test: tabTest, ejercicios: tabEjercicios, citas: tabCitas
     }[tab] || tabResumen;
     fn(t, body);
@@ -222,6 +223,17 @@
     add(el, thesisBlock(t));
     add(el, h("div", { class: "stack" }, h("span", { class: "eyebrow" }, "En un párrafo"), h("div", { class: "prose" }, h("p", { html: md(t.parrafo) }))));
     add(el, h("div", { class: "stack" }, h("span", { class: "eyebrow" }, "Sección por sección"), sectionsBlock(t, false)));
+  }
+
+  /* --- Contexto histórico (cronología) --- */
+  function timeline(t) {
+    return h("ol", { class: "timeline" }, t.cronologia.map(function (c) {
+      return h("li", null, h("span", { class: "yr" }, c.a), h("span", { html: md(c.t) }));
+    }));
+  }
+  function tabContexto(t, el) {
+    add(el, section("Contexto histórico", "Sitúa el texto: qué pasaba cuando se escribió y a qué responde."));
+    add(el, timeline(t));
   }
 
   /* --- Mapa mental (SVG, árbol horizontal) --- */
@@ -687,6 +699,7 @@
       if (sp.k === "panorama") {
         add(body, thesisBlock(t));
         add(body, h("div", { class: "prose" }, h("p", { html: md(t.parrafo) })));
+        if (t.cronologia) { add(body, h("h3", null, "Contexto")); add(body, timeline(t)); }
       }
       if (sp.k === "estructura") { add(body, mapBlock(t)); add(body, h("h3", null, "Esquema del argumento")); add(body, argBlock(t)); }
       if (sp.k === "claves") { add(body, conceptsBlock(t, true)); add(body, h("h3", null, "Casos")); add(body, casesBlock(t)); }

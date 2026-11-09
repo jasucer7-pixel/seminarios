@@ -10,6 +10,7 @@ App minimalista para entender un texto de seminario en unos 20 minutos y no olvi
 |---|---|
 | **Ruta 20′** | Sesión guiada con cronómetro: Activa (2′) → Panorama (3′) → Estructura (5′) → Conceptos y casos (3′) → Recupera (5′) → Explica (2′) |
 | Resumen | Tesis en una frase, el texto en un párrafo y resumen sección por sección |
+| Contexto | Cronología histórica (solo en los textos que la tienen) |
 | Mapa | Mapa mental plegable (y vista de lista) |
 | Esquema | Estructura lógica: premisas, conclusiones, objeciones y respuestas |
 | Conceptos | Glosario con modo autoevaluación (definiciones ocultas) |
@@ -27,7 +28,7 @@ El método y la evidencia que lo respalda están en la pestaña **Método** de l
 ## Textos actuales
 
 - Filosofía política: McMahan, *Laws of War* (2010); Frowe, *Non-Combatant Liability in War* (2014).
-- Historia: pendiente.
+- Historia: Fanon, *Los condenados de la tierra*, cap. I «La violencia» (1961).
 
 ## Añadir un texto
 
