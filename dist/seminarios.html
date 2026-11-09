@@ -1,0 +1,1677 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Seminarios</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: una columna de lectura (max 760px), barra superior fija y pestañas desplazables. */
+:root {
+  --bg: #f4f5f3;
+  --surface: #ffffff;
+  --ink: #16191d;
+  --muted: #5b626a;
+  --line: #dcdfdc;
+  --accent: #2f47b8;
+  --accent-ink: #ffffff;
+  --accent-soft: rgba(47, 71, 184, 0.09);
+  --mark: rgba(242, 207, 59, 0.55);
+  --ok: #1d7a4e;
+  --ok-soft: rgba(29, 122, 78, 0.1);
+  --bad: #b2342c;
+  --bad-soft: rgba(178, 52, 44, 0.09);
+  --b1: #2f47b8;
+  --b2: #1d7a4e;
+  --b3: #a05a12;
+  --b4: #8a2f74;
+  --b5: #2d6f86;
+
+  --f-display: "Instrument Serif", "Iowan Old Style", Georgia, serif;
+  --f-body: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  --r: 10px;
+  --maxw: 760px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111315; --surface: #181b1f; --ink: #e7e9ec; --muted: #9aa1a9; --line: #2a2e34;
+    --accent: #8fa2ff; --accent-ink: #0f1430; --accent-soft: rgba(143, 162, 255, 0.12);
+    --mark: rgba(214, 180, 40, 0.38); --ok: #5cc596; --ok-soft: rgba(92, 197, 150, 0.12);
+    --bad: #f07c72; --bad-soft: rgba(240, 124, 114, 0.12);
+    --b1: #8fa2ff; --b2: #5cc596; --b3: #e3a35b; --b4: #db8cc9; --b5: #6cc3de;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #111315; --surface: #181b1f; --ink: #e7e9ec; --muted: #9aa1a9; --line: #2a2e34;
+  --accent: #8fa2ff; --accent-ink: #0f1430; --accent-soft: rgba(143, 162, 255, 0.12);
+  --mark: rgba(214, 180, 40, 0.38); --ok: #5cc596; --ok-soft: rgba(92, 197, 150, 0.12);
+  --bad: #f07c72; --bad-soft: rgba(240, 124, 114, 0.12);
+  --b1: #8fa2ff; --b2: #5cc596; --b3: #e3a35b; --b4: #db8cc9; --b5: #6cc3de;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 15px/1.6 var(--f-body);
+}
+body::before {
+  content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px);
+  z-index: 10; background: var(--bg);
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+button, input, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+strong { font-weight: 600; background: linear-gradient(transparent 58%, var(--mark) 58%); padding: 0 1px; }
+em { font-style: italic; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+
+/* Barra superior */
+.top {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
+  background: color-mix(in srgb, var(--bg) 92%, transparent);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--line);
+}
+.top .wrap { display: flex; align-items: center; gap: 12px; height: 52px; }
+.brand { font-family: var(--f-display); font-size: 22px; color: var(--ink); letter-spacing: 0.01em; }
+.brand:hover { text-decoration: none; }
+.crumb { color: var(--muted); font-size: 13px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; min-width: 0; }
+.top .spacer { flex: 1; }
+.top .link { font-size: 13px; color: var(--muted); white-space: nowrap; }
+
+main { padding-block: 28px 80px; }
+
+/* Tipografía */
+h1, h2, h3 { text-wrap: balance; margin: 0; }
+h1 { font-family: var(--f-display); font-weight: 400; font-size: clamp(32px, 6vw, 44px); line-height: 1.08; }
+h2 { font-family: var(--f-display); font-weight: 400; font-size: 26px; line-height: 1.2; }
+h3 { font-size: 15px; font-weight: 600; }
+p { margin: 0; }
+.eyebrow { font-family: var(--f-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.muted { color: var(--muted); }
+.small { font-size: 13px; }
+.stack { display: flex; flex-direction: column; gap: 12px; }
+.stack-l { display: flex; flex-direction: column; gap: 28px; }
+.row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+
+/* Botones */
+.btn {
+  appearance: none; border: 1px solid var(--line); background: var(--surface);
+  padding: 8px 14px; border-radius: 999px; cursor: pointer; font-size: 14px; line-height: 1.2;
+}
+.btn:hover { border-color: var(--muted); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.btn.primary:hover { filter: brightness(1.08); }
+.btn.ghost { background: transparent; }
+.btn:disabled { opacity: 0.5; cursor: default; }
+
+/* Inicio */
+.hero { display: flex; flex-direction: column; gap: 10px; margin-bottom: 36px; }
+.hero p { color: var(--muted); max-width: 58ch; }
+.sem { display: flex; flex-direction: column; gap: 12px; margin-bottom: 36px; }
+.sem-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.item {
+  display: grid; grid-template-columns: 1fr auto; gap: 4px 16px; align-items: center;
+  padding: 16px 18px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r);
+  color: var(--ink);
+}
+.item:hover { text-decoration: none; border-color: var(--muted); }
+.item .who { font-size: 13px; color: var(--muted); }
+.item .what { font-weight: 600; }
+.item .go { grid-row: 1 / span 3; grid-column: 2; color: var(--muted); font-size: 20px; }
+.item > div { min-width: 0; }
+.chips { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+.chip { font-family: var(--f-mono); font-size: 11px; padding: 2px 8px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); white-space: nowrap; }
+.chip.ok { background: var(--ok-soft); color: var(--ok); }
+.chip.off { background: transparent; color: var(--muted); border: 1px dashed var(--line); }
+.empty { padding: 16px 18px; border: 1px dashed var(--line); border-radius: var(--r); color: var(--muted); font-size: 14px; }
+
+/* Cabecera de texto */
+.thead { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
+.thead .es { color: var(--muted); }
+.thead .src { font-size: 12px; color: var(--muted); }
+
+.tabs {
+  display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none;
+  border-bottom: 1px solid var(--line); margin-bottom: 24px;
+}
+.tabs::-webkit-scrollbar { display: none; }
+.tab {
+  appearance: none; background: none; border: 0; border-bottom: 2px solid transparent;
+  padding: 10px 10px; cursor: pointer; white-space: nowrap; color: var(--muted); font-size: 14px;
+}
+.tab:hover { color: var(--ink); }
+.tab[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--accent); font-weight: 600; }
+
+/* Bloques */
+.thesis {
+  font-family: var(--f-display); font-size: 23px; line-height: 1.38;
+  padding: 4px 0 4px 18px; border-left: 2px solid var(--ink);
+}
+.thesis strong { font-weight: 400; }
+.prose { max-width: 66ch; }
+.prose p + p { margin-top: 10px; }
+
+details.sec { border-top: 1px solid var(--line); }
+details.sec:last-child { border-bottom: 1px solid var(--line); }
+details.sec summary {
+  cursor: pointer; list-style: none; padding: 12px 0; font-weight: 600;
+  display: flex; justify-content: space-between; gap: 12px;
+}
+details.sec summary::-webkit-details-marker { display: none; }
+details.sec summary::after { content: "+"; color: var(--muted); font-weight: 400; }
+details.sec[open] summary::after { content: "–"; }
+details.sec ul { margin: 0 0 14px; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; max-width: 66ch; }
+
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 16px 18px; }
+.card.soft { background: transparent; }
+
+/* Esquema del argumento */
+.arg { display: flex; flex-direction: column; gap: 6px; }
+.arg-row { display: grid; grid-template-columns: 44px 1fr; gap: 12px; align-items: baseline; padding: 8px 0; }
+.arg-row > div { min-width: 0; }
+.arg-id { font-family: var(--f-mono); font-size: 12px; font-weight: 600; text-align: center; padding: 2px 0; border-radius: 6px; }
+.arg-row.premisa .arg-id { background: var(--accent-soft); color: var(--accent); }
+.arg-row.conclusion .arg-id { background: var(--ink); color: var(--bg); }
+.arg-row.conclusion > div { font-weight: 600; }
+.arg-row.objecion { margin-left: 22px; }
+.arg-row.objecion .arg-id { background: var(--bad-soft); color: var(--bad); }
+.arg-row.respuesta { margin-left: 44px; }
+.arg-row.respuesta .arg-id { background: var(--ok-soft); color: var(--ok); }
+.legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 12px; color: var(--muted); }
+.legend span::before { content: ""; display: inline-block; width: 9px; height: 9px; border-radius: 3px; margin-right: 6px; vertical-align: 0; }
+.legend .lp::before { background: var(--accent); }
+.legend .lc::before { background: var(--ink); }
+.legend .lo::before { background: var(--bad); }
+.legend .lr::before { background: var(--ok); }
+
+/* Mapa mental */
+.mapbox { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--r); background: var(--surface); padding: 12px; }
+.mapbox svg { display: block; }
+.mapbox .node { cursor: pointer; }
+.mapbox text { font-family: var(--f-body); font-size: 12.5px; fill: var(--ink); }
+.mapbox .root text { font-size: 14px; font-weight: 600; fill: var(--accent-ink); }
+.outline { margin: 0; padding-left: 18px; }
+.outline ul { padding-left: 18px; }
+.outline li { margin: 3px 0; }
+.outline > li { font-weight: 600; margin-top: 10px; }
+.outline > li li { font-weight: 400; }
+
+/* Conceptos */
+.concept { padding: 14px 0; border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 4px; }
+.concept:last-child { border-bottom: 1px solid var(--line); }
+.concept .term { font-weight: 600; }
+.concept .en { font-family: var(--f-mono); font-size: 11px; color: var(--muted); }
+.concept .ex { font-size: 13px; color: var(--muted); }
+.concept.hidden-def .def, .concept.hidden-def .ex { filter: blur(6px); cursor: pointer; user-select: none; }
+.switch { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); cursor: pointer; }
+
+/* Casos */
+.cases { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+.case { display: flex; flex-direction: column; gap: 8px; }
+.case > * { min-width: 0; }
+.case .by { font-family: var(--f-mono); font-size: 11px; color: var(--muted); }
+.case h3 { font-family: var(--f-display); font-weight: 400; font-size: 21px; font-style: italic; }
+.reveal { background: var(--accent-soft); border-radius: 8px; padding: 10px 12px; font-size: 14px; }
+
+/* Tarjetas */
+.fc { min-height: 220px; display: flex; flex-direction: column; justify-content: space-between; gap: 16px; padding: 22px; }
+.fc .q { font-family: var(--f-display); font-size: 24px; line-height: 1.3; }
+.fc .a { border-top: 1px solid var(--line); padding-top: 14px; }
+.meter { height: 4px; background: var(--line); border-radius: 4px; overflow: hidden; }
+.meter > i { display: block; height: 100%; background: var(--accent); transition: width 0.3s; }
+.boxes { display: flex; gap: 6px; font-family: var(--f-mono); font-size: 11px; color: var(--muted); flex-wrap: wrap; }
+.boxes b { font-weight: 600; color: var(--ink); }
+
+/* Test */
+.quiz .qtext { font-size: 18px; font-weight: 600; line-height: 1.4; }
+.opts { display: flex; flex-direction: column; gap: 8px; }
+.opt {
+  appearance: none; text-align: left; background: var(--surface); border: 1px solid var(--line);
+  border-radius: var(--r); padding: 12px 14px; cursor: pointer; font-size: 15px; line-height: 1.45;
+}
+.opt:hover:not(:disabled) { border-color: var(--muted); }
+.opt:disabled { cursor: default; }
+.opt.right { border-color: var(--ok); background: var(--ok-soft); }
+.opt.wrong { border-color: var(--bad); background: var(--bad-soft); }
+.feedback { border-radius: var(--r); padding: 12px 14px; font-size: 14px; }
+.feedback.ok { background: var(--ok-soft); }
+.feedback.ko { background: var(--bad-soft); }
+.score { font-family: var(--f-display); font-size: 64px; line-height: 1; }
+.src-tag { font-family: var(--f-mono); font-size: 11px; color: var(--muted); }
+
+/* Ejercicios */
+.ex-k { font-family: var(--f-mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); }
+textarea {
+  width: 100%; min-height: 110px; resize: vertical; padding: 12px; border-radius: var(--r);
+  border: 1px solid var(--line); background: var(--bg); line-height: 1.5;
+}
+input[type="text"] { width: 100%; padding: 8px 12px; border-radius: 8px; border: 1px solid var(--line); background: var(--bg); }
+.checks { display: flex; flex-direction: column; gap: 6px; font-size: 14px; }
+.checks label { display: flex; gap: 8px; align-items: baseline; cursor: pointer; }
+
+/* Citas */
+blockquote { margin: 0; padding: 14px 0; border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 6px; }
+blockquote:last-child { border-bottom: 1px solid var(--line); }
+blockquote .c { font-family: var(--f-display); font-size: 20px; line-height: 1.35; }
+blockquote .meta { font-size: 13px; color: var(--muted); }
+
+/* Ruta 20 */
+.route-head { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
+.clock { font-family: var(--f-mono); font-size: 34px; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
+.clock.over { color: var(--bad); }
+.steps { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; }
+.step {
+  appearance: none; border: 0; background: none; cursor: pointer; padding: 0; text-align: left;
+  display: flex; flex-direction: column; gap: 6px; font-size: 11px; color: var(--muted); min-width: 0;
+}
+.step i { display: block; height: 4px; border-radius: 4px; background: var(--line); }
+.step.done i { background: var(--ink); }
+.step.cur i { background: var(--accent); }
+.step.cur { color: var(--ink); font-weight: 600; }
+.step span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.step-title { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.step-title .eyebrow { color: var(--accent); }
+.nav { display: flex; justify-content: space-between; gap: 8px; border-top: 1px solid var(--line); padding-top: 16px; }
+
+/* Tablas */
+.tablebox { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--r); background: var(--surface); }
+table { border-collapse: collapse; width: 100%; min-width: 600px; font-size: 14px; }
+th, td { text-align: left; vertical-align: top; padding: 10px 12px; border-bottom: 1px solid var(--line); }
+tr:last-child td { border-bottom: 0; }
+th { font-family: var(--f-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); }
+td:first-child { font-weight: 600; white-space: nowrap; }
+
+/* Método */
+.method { display: flex; flex-direction: column; gap: 0; }
+.method .m { display: grid; grid-template-columns: 72px 1fr; gap: 14px; padding: 16px 0; border-top: 1px solid var(--line); }
+.method .m:last-child { border-bottom: 1px solid var(--line); }
+.method .m > div { min-width: 0; }
+.method .t { font-family: var(--f-mono); font-size: 13px; color: var(--accent); }
+.evid { display: flex; flex-direction: column; gap: 10px; }
+.evid li { max-width: 66ch; }
+.lvl { font-family: var(--f-mono); font-size: 11px; padding: 1px 6px; border-radius: 4px; margin-left: 6px; }
+.lvl.alta { background: var(--ok-soft); color: var(--ok); }
+.lvl.media { background: var(--accent-soft); color: var(--accent); }
+.lvl.baja { background: var(--bad-soft); color: var(--bad); }
+
+.toast {
+  position: fixed; left: 50%; transform: translateX(-50%);
+  bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+  background: var(--ink); color: var(--bg); padding: 10px 16px; border-radius: 999px; font-size: 14px; z-index: 20;
+}
+
+@media (max-width: 520px) {
+  .arg-row.objecion { margin-left: 10px; }
+  .arg-row.respuesta { margin-left: 20px; }
+  .thesis { font-size: 20px; }
+  .fc .q { font-size: 21px; }
+  .method .m { grid-template-columns: 1fr; gap: 4px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#">Seminarios</a>
+    <span class="crumb" id="crumb"></span>
+    <span class="spacer"></span>
+    <a class="link" href="#metodo">Método</a>
+  </div>
+</header>
+<main class="wrap" id="app"></main>
+
+<!-- Datos: un archivo por texto + el registro de seminarios -->
+<script>
+// Registro de seminarios. Para añadir un texto: crea data/<id>.js
+// (copia data/plantilla.js), añádelo a index.html y pon su id en "textos".
+window.SEMINARIOS = [
+  {
+    id: "filosofia-politica",
+    nombre: "Filosofía política",
+    tema: "Ética y derecho de la guerra",
+    textos: ["mcmahan", "frowe"],
+    orden: "Lee primero McMahan (marco general: moral vs. derecho, asimetría, liability) y después Frowe (aplica la liability a los civiles y discute con McMahan).",
+
+    comparacion: {
+      columnas: ["McMahan, Laws of War", "Frowe, Non-Combatant Liability"],
+      filas: [
+        ["Pregunta", "¿Por qué el derecho de la guerra es simétrico si la moral es asimétrica? ¿Deben coincidir?", "¿Pueden los no combatientes ser *liable* a la muerte defensiva?"],
+        ["Respuesta", "Moral y derecho divergen hoy por razones epistémicas; el ideal es la congruencia.", "Sí, si contribuyen responsablemente a una guerra injusta."],
+        ["Concepto eje", "Moral (se descubre) vs. derecho (artefacto).", "*Liability* vs. permisibilidad."],
+        ["Fundamento", "Una sola moral: la de la legítima defensa, asimétrica y basada en la *liability*.", "Las reglas de la legítima defensa fundamentan matar en la guerra."],
+        ["Civiles", "La inmunidad civil universal quizá no tenga base moral, pero debe ser ley absoluta.", "Los civiles responsables son *liable*; su protección es contingente (necesidad)."],
+        ["Necesidad", "Interna a la *liability* (nota 9: eficacia instrumental).", "Externa: afecta a la permisibilidad, no a la *liability* (*Lucky Escape*)."],
+        ["Consentimiento", "Los combatientes no consienten ser atacados (polaco).", "Los combatientes no pueden asumir por acuerdo la *liability* de los civiles."],
+        ["Rivales", "Hobbes, Walzer, Hurka, Kutz, consecuencialistas.", "Rodin, McMahan (2009), Fabre, Manual británico."]
+      ]
+    },
+
+    conexiones: [
+      { t: "Mismo marco: individualismo y *liability*", d: "Ambos rechazan la «moral especial de la guerra» y juzgan matar en la guerra con los principios de la legítima defensa: asimetría y *liability*. Frowe lo asume (10.2) y McMahan lo argumenta (VIII: «solo hay una moral»)." },
+      { t: "Convergencia sobre los civiles", d: "McMahan admite que la inmunidad civil universal quizá no tenga base en la moral básica y que la justicia podría permitir atacar a civiles muy responsables. Frowe lleva esto hasta el final: los civiles que contribuyen responsablemente son *liable*. Uno de los «orígenes» que cita McMahan (matar civiles no sirve militarmente) es justo la razón contingente que Frowe acepta." },
+      { t: "Desacuerdo sobre la necesidad", d: "En la nota 9 McMahan define la *liability* con una condición de eficacia instrumental. Frowe (10.7) ataca exactamente esa tesis con *Lucky Escape*: la *liability* mira hacia atrás; la necesidad es una condición separada de permisibilidad." },
+      { t: "Dos separaciones paralelas", d: "McMahan separa moral y derecho; Frowe separa *liability* y permisibilidad. En ambos casos, de que alguien no tenga derecho moral a no ser dañado no se sigue que debamos (o podamos legalmente) dañarle." },
+      { t: "El consentimiento no hace el trabajo", d: "McMahan: ponerse el uniforme no es consentir ser atacado. Frowe: los combatientes no pueden «quedarse» con la *liability* de los civiles por acuerdo. Ambos niegan que el estatus de combatiente se explique por consentimiento." },
+      { t: "Ley pragmática, moral profunda", d: "Combinando ambos: los civiles pueden ser moralmente *liable* (Frowe), pero el derecho debe protegerlos de forma absoluta (McMahan) porque un permiso legal sería abusado por el bando injusto." }
+    ],
+
+    sintesis: [
+      { q: "¿Contradice la tesis de Frowe la defensa que hace McMahan de la inmunidad civil absoluta en el derecho?", modelo: "No necesariamente. Frowe habla de *liability* moral; McMahan, de lo que debe decir la ley. McMahan acepta que la inmunidad universal puede no tener base moral profunda y aun así la defiende como regla jurídica por razones epistémicas y de abuso. Frowe misma separa *liability* de permisibilidad y reconoce razones pragmáticas para pactos de no atacar civiles (10.4). Son compatibles: moralmente *liable*, jurídicamente inmune.", criterios: ["Distingue nivel moral y jurídico", "Cita la tesis de McMahan sobre la inmunidad", "Cita la separación *liability* / permisibilidad", "Concluye compatibilidad (o matiza)"] },
+      { q: "¿Quién tiene razón sobre la necesidad: McMahan (interna a la *liability*) o Frowe (externa)?", modelo: "McMahan: la *liability* se justifica por la justicia preventiva, que solo redistribuye daños que sirven para algo; si dañar no sirve, no hay nada que redistribuir. Frowe: *Lucky Escape* muestra que el asesino no puede defenderse contra su víctima, señal de que sigue siendo *liable*; la *liability* depende de lo que uno ha hecho. Valoración: la de Frowe explica mejor la intuición de *Lucky Escape*; la de McMahan encaja mejor con la distinción *desert* / *liability* (si la *liability* no exige utilidad, se parece al merecimiento).", criterios: ["Expone ambas", "Usa *Lucky Escape*", "Usa la nota 9 / justicia preventiva", "Toma partido razonado"] },
+      { q: "Aplica ambos textos al caso de un ingeniero civil que diseña drones para un ejército agresor.", modelo: "Frowe: amenaza indirecta material/tecnológica, moralmente responsable → *liable*; si matarle impide producir drones (necesidad) y es proporcionado, sería permisible. McMahan: moralmente quizá *liable* (responsabilidad significativa, contribución relevante), pero el derecho actual lo protege (no participa directamente) y debe seguir haciéndolo porque un permiso legal sería abusado. Combinación: moralmente atacable, legalmente no.", criterios: ["Análisis de Frowe", "Análisis de McMahan", "Distinción moral / ley", "Conclusión clara"] },
+      { q: "¿Qué tendría que pasar para que el derecho recogiera la tesis de Frowe? Usa la propuesta de McMahan.", modelo: "Habría que superar el problema epistémico: un tribunal internacional que declare qué bando es injusto. Solo entonces podría el derecho tratar de forma asimétrica a los combatientes y, quizá, a ciertos civiles del bando injusto. Pero aun así McMahan teme el abuso: el permiso de atacar civiles es especialmente peligroso, así que probablemente sería lo último en cambiar.", criterios: ["Tribunal / problema epistémico", "Asimetría", "Riesgo de abuso", "Valoración"] }
+    ]
+  },
+  {
+    id: "historia",
+    nombre: "Historia",
+    tema: "Próximamente",
+    textos: []
+  }
+];
+
+</script>
+<script>
+// Jeff McMahan, "Laws of War" (2010)
+window.TEXTOS = window.TEXTOS || {};
+window.TEXTOS.mcmahan = {
+  id: "mcmahan",
+  seminario: "filosofia-politica",
+  autor: "Jeff McMahan",
+  titulo: "Laws of War",
+  tituloEs: "Las leyes de la guerra",
+  fuente: "En S. Besson y J. Tasioulas (eds.), The Philosophy of International Law, Oxford University Press, 2010, cap. 24, pp. 493–509.",
+  paginas: 17,
+
+  tesis: "La moral de la guerra y el derecho de la guerra son cosas distintas: la moral es **asimétrica** (los combatientes injustos no tienen derecho a matar), pero el derecho *in bello* es **simétrico** y, por razones epistémicas, hoy **debe** divergir de la moral; el objetivo a largo plazo es acercarlos mediante mejor teoría del *jus ad bellum* e instituciones como un tribunal internacional.",
+
+  parrafo: "McMahan hace un recorrido histórico: la guerra justa clásica era **individualista** y se presentaba como derecho natural; con Hobbes y el auge del Estado, el pensamiento se volvió **colectivista** y positivista, el *jus ad bellum* se fue vaciando hasta que en el s. XIX la guerra era una prerrogativa soberana, y todo se centró en el *jus in bello*. Tras 1945 la Carta de la ONU redujo el *ad bellum* a una regla tosca (autorización del Consejo de Seguridad o legítima defensa). Walzer modeló su teoría en ese derecho (igualdad moral de los combatientes). McMahan sostiene que la moral y el derecho son distintos: la moral, como la de la legítima defensa, es **asimétrica** y se basa en la ***liability***. ¿Por qué el *jus in bello* es simétrico? Rechaza cuatro justificaciones (consentimiento, defensa individual simétrica, colectivismo, consecuencialismo de reglas) porque solo hay **una moral**. La razón real es **epistémica**: los combatientes no saben si su guerra es justa y los injustos reclamarían los mismos derechos. Por eso el derecho debe divergir (p. ej. mantener la inmunidad civil absoluta, aunque no tenga base moral profunda). Para acercar derecho y moral propone: teoría secular rigurosa del *jus ad bellum*, educación moral de los soldados y un **tribunal internacional imparcial** que dictamine sobre la justicia de las guerras.",
+
+  preguntasPrevias: [
+    {
+      q: "Si un soldado lucha en una guerra de agresión injusta pero respeta todas las reglas (no ataca civiles, trata bien a los prisioneros), ¿actúa moralmente bien?",
+      a: "Para el **derecho** sí (igualdad de los combatientes). Para **McMahan**, no: matar a combatientes justos, que no han hecho nada para perder su derecho a no ser atacados, es moralmente incorrecto. Esa es la divergencia entre moral y derecho."
+    },
+    {
+      q: "Si la moral dice X, ¿debe el derecho decir también X?",
+      a: "No necesariamente, al menos ahora. Un derecho que copiara la moral podría producir **más** injusticia, porque todos se creerían el bando justo. Pero el ideal es la mayor congruencia posible."
+    },
+    {
+      q: "¿Tiene la inmunidad de los civiles una base moral profunda?",
+      a: "McMahan duda que la inmunidad **universal** la tenga: la justicia podría permitir atacar a civiles muy responsables. Pero el derecho debe prohibirlo de forma absoluta porque un permiso sería abusado."
+    }
+  ],
+
+  secciones: [
+    { t: "I. Introducción", p: [
+      "La guerra justa clásica se presentaba como **derecho natural**: leyes morales inmutables. Esto inauguró la tendencia a **confundir** moral de la guerra y derecho de la guerra.",
+      "Tesis: las leyes de la guerra son distintas de la moral y **hoy** deben divergir de ella en aspectos fundamentales.",
+      "Objetivo último: la máxima **congruencia** entre ley y moral, lo que exige análisis moral riguroso e **innovación institucional** internacional."
+    ]},
+    { t: "II. Breve historia", p: [
+      "Teoría clásica **individualista** (teólogos): los principios de las relaciones entre individuos se aplican a la guerra; el individuo es la unidad de evaluación.",
+      "Con el poder de los Estados, el foco pasa a los Estados: visión **colectivista**; los combatientes son meros instrumentos.",
+      "**Hobbes**: la moral es un **artefacto** fruto del acuerdo; no hay límite moral a la prerrogativa del soberano → igualdad soberana de los Estados y derecho a hacer la guerra cuando convenga (reconocido en el s. XIX).",
+      "El derecho de gentes se vuelve pragmático; el *jus ad bellum* decae (Grotius: los tratados de paz no señalaban al culpable). Clausewitz: la guerra como «política por otros medios».",
+      "Hershey (1906): el derecho internacional no juzga la justicia de las guerras; solo regula su conducción.",
+      "Tras las guerras mundiales: prioridad a **prevenir** la guerra. La **Carta de la ONU** (arts. 2.4 y 51): solo es legal la fuerza autorizada por el Consejo de Seguridad o en legítima defensa ante un ataque armado. Un *ad bellum* «tosco y simplista»; Detter lo llama «en gran medida obsoleto».",
+      "**Walzer** (*Just and Unjust Wars*, 1977) modela la teoría en el derecho: solo la agresión justifica la guerra (salvo rescate humanitario); el *in bello* es independiente del *ad bellum*; **igualdad de derecho a matar**."
+    ]},
+    { t: "III. Moral, derecho interno y derecho internacional", p: [
+      "Moral y derecho son «totalmente diferentes»: el derecho es un **artefacto** diseñado con fines; la moral se **descubre**, no se hace.",
+      "Hay que mantenerlos conceptualmente separados, pero buscar que el contenido del derecho converja con la moral, como ya ocurre en el derecho penal interno.",
+      "Justificaciones para dañar: mal menor, consentimiento y, sobre todo, ***liability***: la víctima ha hecho algo por lo que ya no tiene derecho a no ser dañada.",
+      "En los conflictos la posición moral es **asimétrica**: el agresor no puede defenderse contra la defensa legítima de la víctima.",
+      "Tipos de justicia: **preventiva** (redistribuir ex ante el daño inevitable hacia el responsable: legítima defensa), **correctiva** (ex post: responsabilidad civil) y **retributiva** (derecho penal).",
+      "Nota 9: *desert* vs. *liability*: merecer un daño no depende de sus consecuencias; ser *liable* exige una condición de **eficacia instrumental** (que dañar sirva para algo).",
+      "Problema: el *ad bellum* jurídico es asimétrico, pero el *in bello* es **simétrico** (neutral entre combatientes justos e injustos). ¿Por qué? Cinco respuestas: cuatro rechazadas y la suya."
+    ]},
+    { t: "IV. Consentimiento", p: [
+      "Tesis rival (Hurka): los combatientes **consienten** implícitamente ser atacados, como en un combate de boxeo o un duelo.",
+      "Contra 1: el joven **polaco** que se alista contra la invasión nazi no consiente que le maten. Llevar uniforme es **respetar una convención** (atraer el fuego sobre sí y alejarlo de otros, como un padre ante un depredador), no consentir.",
+      "Contra 2: si el uniforme fuera consentimiento, el patriota que no quiere consentir lucharía sin uniforme; el derecho lo trataría como combatiente ilegal y pérfido. Absurdo condenar la única opción honorable.",
+      "Contra 3: el consentimiento no siempre renuncia al derecho (duelo con el villano que te ha difamado).",
+      "Contra 4: aunque consintieran, los combatientes injustos dañan a terceros (civiles, efectos colaterales) al servir a una causa injusta."
+    ]},
+    { t: "V. Matar en la guerra como defensa individual", p: [
+      "Tesis rival: una moral **específica de la guerra** con la misma estructura pero otro criterio: es *liable* quien **amenaza** («inocente» = no amenazante). Combatientes de ambos lados se amenazan → simetría.",
+      "Implica que la defensa necesaria y proporcionada siempre se justifica a sí misma, algo contrario a la moral ordinaria (no hay defensa justificada contra un ataque al que uno es *liable*).",
+      "Contra: ¿por qué esta visión hobbesiana solo valdría en la guerra? Y es incoherente incluso en la guerra: el *ad bellum* aplica una defensa **asimétrica** a los Estados."
+    ]},
+    { t: "VI. Colectivismo", p: [
+      "Tesis rival: una moral colectivista; el *ad bellum* (asimétrico) se aplica a los Estados, pero la injusticia no se transmite a los combatientes, que actúan bien si respetan el *in bello*.",
+      "Versión 1 (Kutz): actuar colectivamente bajo el Estado concede permisos que no tendríamos como individuos. Contra: «alquimia moral» no explicada; y si existiera, ¿por qué no se extiende al *ad bellum*?",
+      "Versión 2: los combatientes son instrumentos, sin conocimiento ni poder sobre la decisión de ir a la guerra. Contra: los soldados nazis que mataron a millones de combatientes aliados actuaron mal; la moral exige juicios difíciles y asumir la responsabilidad si te equivocas."
+    ]},
+    { t: "VII. Consecuencialismo", p: [
+      "Tesis rival: la moral de la guerra es **consecuencialista de reglas**: valen las reglas claras que mejor funcionan (prohibir la agresión, no atacar civiles, permitir atacar combatientes…).",
+      "Preguntas abiertas: ¿cómo medir consecuencias? ¿parcialidad nacional? ¿peso distinto para el daño a inocentes?",
+      "Pregunta fundamental: ¿por qué abandonar los principios ordinarios de *liability* en la guerra? ¿Qué pasa con el derecho a no ser atacado injustamente?",
+      "La guerra solo difiere de otros conflictos en **escala**; además habría que determinar con precisión cuándo hay guerra para saber si algo es asesinato."
+    ]},
+    { t: "VIII. La divergencia entre moral y derecho", p: [
+      "**Solo hay una moral**. La guerra es continua con otras actividades; la moral de matar en la guerra es **asimétrica**. El derecho *in bello* es simétrico → **divergen**.",
+      "Razón principal: **epistémica**. Casi todos los combatientes creen que su guerra es justa; los injustos reclamarían cualquier derecho concedido a los justos. Una ley asimétrica sería ineficaz.",
+      "¿Dar a todos los permisos morales de los justos? No: la justicia podría permitir, en raros casos, matar a **civiles** muy responsables. La **inmunidad civil universal** quizá no tenga base en la moral básica; sus fuentes: interés en preservar la sociedad, que matar civiles no sirve militarmente, la idea de los combatientes como profesionales.",
+      "Pero un permiso legal así sería **desastroso**: lo usarían más los injustos y abusarían los justos. El derecho debe negar a ambos opciones que a veces serían moralmente permisibles para los justos.",
+      "Reto: ¿puede una moral no consecuencialista aprobar una ley que permite violar derechos (que el combatiente injusto mate al justo)? Respuesta: **permitir legalmente** un tipo de asesinato no es lo mismo que **cometerlo** para evitar otros; es crear condiciones con menos injusticia."
+    ]},
+    { t: "IX. Reducir la brecha", p: [
+      "El objetivo normativo del derecho de la guerra no debe ser solo reducir la frecuencia y destructividad de la guerra, sino la **justicia** (como el derecho de legítima defensa: no importa igual el daño al agresor que al inocente).",
+      "Hoy es inviable un *in bello* asimétrico por el problema **epistémico**; el simétrico actual quizá funcione tan bien como cualquier otro.",
+      "Propuesta: (1) mejor comprensión moral del *jus ad bellum* desde la filosofía **secular** (la clásica era breve y teológica); (2) **difusión y educación** moral de los militares; (3) un *ad bellum* jurídico detallado interpretado por un **tribunal internacional imparcial**, idealmente durante o antes de las guerras.",
+      "Así se mitigarían las barreras epistémicas y se podría reescribir el *in bello* en forma **asimétrica**, más acorde con la justicia."
+    ]}
+  ],
+
+  mapa: { t: "Laws of War (McMahan)", c: [
+    { t: "Historia", c: [
+      { t: "Clásicos: individualismo + derecho natural" },
+      { t: "Hobbes: moral = artefacto" },
+      { t: "S. XIX: guerra como prerrogativa" },
+      { t: "ONU: ad bellum tosco" },
+      { t: "Walzer: igualdad de combatientes" }
+    ]},
+    { t: "Moral ≠ Derecho", c: [
+      { t: "Derecho: artefacto" },
+      { t: "Moral: se descubre" },
+      { t: "Liability y asimetría" },
+      { t: "Justicia preventiva / correctiva / retributiva" }
+    ]},
+    { t: "¿Por qué in bello simétrico?", c: [
+      { t: "Consentimiento ✗", c: [{ t: "Polaco y uniforme" }] },
+      { t: "Defensa simétrica ✗", c: [{ t: "¿Por qué solo en guerra?" }] },
+      { t: "Colectivismo ✗", c: [{ t: "Alquimia moral" }] },
+      { t: "Consecuencialismo ✗", c: [{ t: "Guerra = solo escala" }] },
+      { t: "Epistémico ✓" }
+    ]},
+    { t: "Divergencia", c: [
+      { t: "Una sola moral, asimétrica" },
+      { t: "Inmunidad civil: regla legal" },
+      { t: "Permitir ≠ cometer" }
+    ]},
+    { t: "Reducir la brecha", c: [
+      { t: "Teoría secular del ad bellum" },
+      { t: "Educación moral militar" },
+      { t: "Tribunal internacional" }
+    ]}
+  ]},
+
+  argumento: [
+    { k: "premisa", id: "P1", t: "La moral se descubre; el derecho es un artefacto diseñado con fines. Son distintos aunque su contenido pueda coincidir." },
+    { k: "premisa", id: "P2", t: "La moral ordinaria de dañar se basa en la *liability* y es asimétrica: el agresor no puede defenderse de la defensa legítima." },
+    { k: "premisa", id: "P3", t: "Solo hay una moral: la guerra difiere de otros conflictos únicamente en escala y complejidad." },
+    { k: "conclusion", id: "C1", t: "La moral de matar en la guerra es asimétrica: los combatientes injustos no tienen derecho a matar a los justos." },
+    { k: "premisa", id: "P4", t: "El *jus in bello* jurídico es simétrico (igualdad de los combatientes)." },
+    { k: "conclusion", id: "C2", t: "Derecho y moral divergen." },
+    { k: "objecion", id: "O1", t: "La simetría refleja una moral especial: consentimiento, defensa simétrica, colectivismo o consecuencialismo de reglas." },
+    { k: "respuesta", id: "R1", t: "Las cuatro fallan: el uniforme no es consentimiento; la defensa simétrica es arbitraria; la alquimia colectiva no se explica; abandonar la *liability* en la guerra no se justifica." },
+    { k: "premisa", id: "P5", t: "Razón epistémica: los combatientes creen que su guerra es justa; los injustos reclamarían cualquier permiso de los justos." },
+    { k: "conclusion", id: "C3", t: "Hoy el derecho debe divergir de la moral (simetría, inmunidad civil absoluta), porque así hay menos injusticia." },
+    { k: "conclusion", id: "C4", t: "Objetivo a largo plazo: congruencia mediante teoría del *ad bellum*, educación y un tribunal internacional que permita un *in bello* asimétrico." }
+  ],
+
+  conceptos: [
+    { t: "Jus ad bellum", en: "", d: "Principios sobre la justicia del recurso a la guerra (causa justa, etc.). Hoy, jurídicamente, se reduce a la Carta de la ONU.", e: "¿Es legítimo que Alemania invada Polonia? No: agresión." },
+    { t: "Jus in bello", en: "", d: "Principios sobre la conducción de la guerra (discriminación, proporcionalidad, trato a prisioneros). En derecho, independientes del *ad bellum*.", e: "No atacar civiles, no torturar prisioneros." },
+    { t: "Igualdad moral de los combatientes", en: "Moral equality of combatants", d: "Tesis (Walzer) de que los combatientes de ambos bandos tienen los mismos derechos y responsabilidades, incluido el «igual derecho a matar». McMahan la rechaza moralmente pero la acepta, de momento, en el derecho.", e: "Un soldado nazi que respeta el *in bello* no comete ilícito." },
+    { t: "Simetría / asimetría", en: "", d: "Simétrico: las mismas reglas para justos e injustos (derecho *in bello*). Asimétrico: el agresor no tiene los derechos de la víctima (moral, derecho interno, *ad bellum*).", e: "El atracador no tiene derecho a defenderse del tendero." },
+    { t: "Liability", en: "", d: "Una persona es *liable* a un daño si, por algo que ha hecho (normalmente un mal), no tiene derecho a no sufrirlo. Para McMahan exige además eficacia instrumental (nota 9).", e: "El agresor injusto es *liable* a la fuerza defensiva necesaria." },
+    { t: "Desert vs. liability", en: "Merecimiento vs. liability", d: "Merecer un daño da razones independientes de las consecuencias; ser *liable* solo si dañar sirve a un fin (prevenir, compensar).", e: "Castigo retributivo (desert) vs. defensa preventiva (liability)." },
+    { t: "Justicia preventiva", en: "Preventive justice", d: "Redistribución *ex ante* del daño inevitable hacia los responsables de la amenaza. Es la lógica de la legítima defensa.", e: "Si alguien debe sufrir, que sea el agresor y no la víctima." },
+    { t: "Justicia correctiva", en: "Corrective justice", d: "Redistribución *ex post* de pérdidas hacia el responsable. Objetivo del derecho de daños (*torts*).", e: "Indemnización por un accidente culpable." },
+    { t: "Justicia retributiva", en: "Retributive justice", d: "Dar al culpable lo que merece. Objetivo tradicional del derecho penal.", e: "Pena de prisión por un asesinato." },
+    { t: "Colectivismo", en: "Collectivism", d: "Visión de la guerra como relación entre Estados; los combatientes son instrumentos y no responden del *ad bellum*.", e: "Kutz: actuar bajo el Estado concede permisos especiales." },
+    { t: "Individualismo", en: "Individualism", d: "Visión clásica (y de McMahan): los principios que rigen entre individuos se aplican a la guerra; el individuo es la unidad de evaluación.", e: "Matar en la guerra se juzga como la legítima defensa." },
+    { t: "Consecuencialismo de reglas", en: "Rule-consequentialism", d: "La moral de la guerra serían las reglas que mejor funcionan en la práctica.", e: "Prohibir atacar civiles porque reduce el daño total." },
+    { t: "Problema epistémico", en: "Epistemic problem", d: "La dificultad de saber si una guerra es justa. Casi todos los combatientes creen luchar en el bando justo. Es la razón principal de la divergencia.", e: "Ambos bandos dicen defenderse." },
+    { t: "Carta de la ONU (arts. 2.4 y 51)", en: "UN Charter", d: "Solo dos usos legales de la fuerza: autorización del Consejo de Seguridad o legítima defensa individual o colectiva ante un ataque armado.", e: "Reduce el *ad bellum* jurídico a una regla «tosca»." },
+    { t: "Inmunidad civil universal", en: "Universal civilian immunity", d: "Prohibición absoluta de atacar civiles. McMahan duda de que tenga base en la moral no convencional, pero defiende mantenerla como ley.", e: "Fuentes: preservar la sociedad, inutilidad militar, combatientes como profesionales." }
+  ],
+
+  casos: [
+    { n: "El voluntario polaco", de: "McMahan", d: "Un joven polaco se alista para luchar contra la invasión nazi y se pone el uniforme.", prueba: "No consiente que le maten: respeta una convención que atrae el fuego hacia los combatientes y lo aleja de los civiles. Refuta el argumento del consentimiento." },
+    { n: "El patriota sin uniforme", de: "McMahan", d: "El polaco se niega por principio a «consentir» ser atacado y lucha sin uniforme.", prueba: "Si el uniforme fuera consentimiento, esto sería lo honorable; pero el derecho lo trata como combatiente ilegal y pérfido. Reducción al absurdo." },
+    { n: "El duelo del villano", de: "McMahan", d: "En la Europa del s. XIX, un villano difama a quien ya ha perjudicado y le reta a duelo; la víctima acepta por honor, no dispara y muere.", prueba: "El consentimiento no siempre renuncia al derecho: la muerte no es asesinato, pero tampoco está justificada." },
+    { n: "Los soldados nazis", de: "McMahan", d: "Combatientes alemanes que, respetando el *in bello*, mataron a millones de combatientes aliados.", prueba: "Esas muertes fueron moralmente incorrectas. La responsabilidad no es solo del Estado abstracto o de unos líderes. Refuta el colectivismo." },
+    { n: "El padre y el depredador", de: "McMahan", d: "Un padre atrae la atención de un animal hacia sí para que su hijo escape.", prueba: "Analogía del uniforme: atraer el fuego no es consentir el ataque." }
+  ],
+
+  autores: [
+    { n: "Thomas Hobbes", pos: "La moral es un artefacto del acuerdo; no hay límites morales al soberano.", resp: "Fundamenta la igualdad soberana de los Estados y el derecho a la guerra. McMahan: la moral se descubre." },
+    { n: "Hugo Grotius", pos: "Teoría detallada de la causa justa, pero constata el declive del *ad bellum*.", resp: "Figura de transición entre la guerra justa y el derecho de gentes." },
+    { n: "Carl von Clausewitz", pos: "La guerra es «la política por otros medios».", resp: "McMahan lo llama «depravado»: refleja la guerra como prerrogativa estatal." },
+    { n: "Michael Walzer", pos: "Solo la agresión justifica la guerra; *in bello* independiente; igual derecho a matar.", resp: "Su teoría copia el derecho del s. XX; McMahan rechaza la igualdad moral." },
+    { n: "Thomas Hurka", pos: "Los combatientes consienten ser atacados.", resp: "Uniforme = convención, no consentimiento." },
+    { n: "Christopher Kutz", pos: "Actuar colectivamente bajo el Estado concede permisos especiales.", resp: "«Alquimia moral» sin explicar." },
+    { n: "Allen Buchanan", pos: "Institucionalizar la guerra justa.", resp: "McMahan se apoya en él para proponer instituciones." }
+  ],
+
+  citas: [
+    { c: "I believe that the morality of war and the law of war are utterly different, just as morality and law in domestic society are utterly different.", p: "p. 497", n: "Tesis de partida." },
+    { c: "Law is an artefact, consciously designed to serve certain purposes, whereas morality is not.", p: "p. 497", n: "Por qué son distintos." },
+    { c: "Acceptance of combatant status does not involve consent but only recognition of the convention.", p: "p. 501", n: "Contra Hurka." },
+    { c: "There is really only one morality.", p: "p. 505", n: "Contra las morales especiales de la guerra." },
+    { c: "It is, in fact, doubtful that the idea of universal civilian immunity has any foundation in basic, non-conventional morality.", p: "p. 506", n: "Conexión directa con Frowe." },
+    { c: "Legally permitting a form of murder is morally quite unlike committing a murder.", p: "p. 507", n: "Cómo una moral no consecuencialista puede aprobar la ley simétrica." }
+  ],
+
+  errores: [
+    "Creer que McMahan defiende cambiar ya el derecho para hacerlo asimétrico. Dice que hoy produciría más injusticia.",
+    "Pensar que acepta la igualdad moral de los combatientes: la acepta solo como **regla jurídica** provisional.",
+    "Confundir su tesis con el positivismo de Hobbes: para McMahan la moral es objetiva y se descubre.",
+    "Pensar que las cinco respuestas son todas rechazadas: rechaza cuatro; la quinta (epistémica) es la suya."
+  ],
+
+  tarjetas: [
+    { q: "Tesis central de McMahan en «Laws of War».", a: "Moral y derecho de la guerra son distintos; hoy el derecho *in bello* (simétrico) debe divergir de la moral (asimétrica) por razones epistémicas; el ideal es la máxima congruencia." },
+    { q: "¿Por qué moral y derecho son «totalmente diferentes»?", a: "El derecho es un artefacto diseñado conscientemente con fines; la moral se descubre, no se hace." },
+    { q: "Dos ideas de Hobbes que marcaron el derecho de la guerra.", a: "1) El derecho puede ser producto del acuerdo, sin modelo natural; 2) no hay límite moral al soberano → igualdad soberana y derecho a hacer la guerra." },
+    { q: "¿Qué dice la Carta de la ONU sobre el uso de la fuerza?", a: "Solo es legal con autorización del Consejo de Seguridad o en legítima defensa individual o colectiva ante un ataque armado (arts. 2.4 y 51)." },
+    { q: "Tres tesis de Walzer que McMahan cita.", a: "Solo la agresión justifica la guerra (salvo rescate humanitario); el *in bello* es independiente del *ad bellum*; los combatientes tienen igual derecho a matar." },
+    { q: "Justicia preventiva, correctiva y retributiva.", a: "Preventiva: ex ante, desviar el daño al responsable (legítima defensa). Correctiva: ex post, transferir pérdidas (daños civiles). Retributiva: dar lo merecido (penal)." },
+    { q: "Desert vs. liability (nota 9).", a: "*Desert*: razón para dañar independiente de las consecuencias. *Liability*: solo si dañar sirve a un fin; exige eficacia instrumental." },
+    { q: "Las cinco respuestas a «¿por qué el in bello es simétrico?».", a: "1) Consentimiento, 2) defensa individual simétrica, 3) colectivismo, 4) consecuencialismo de reglas (rechazadas); 5) razón epistémica y pragmática (la suya)." },
+    { q: "¿Por qué el uniforme no es consentimiento?", a: "Es respetar una convención que concentra el ataque en combatientes y protege a civiles, como el padre que atrae al depredador. Si fuera consentimiento, el patriota honorable lucharía sin uniforme." },
+    { q: "Crítica a la defensa individual simétrica (amenazar = liable).", a: "¿Por qué esa visión hobbesiana solo valdría en la guerra? Además es incoherente: el *ad bellum* aplica a los Estados una defensa asimétrica." },
+    { q: "Crítica al colectivismo.", a: "La «alquimia moral» no se explica y no se ve por qué no se extendería al *ad bellum*. Los soldados nazis actuaron mal; la moral exige juicios difíciles." },
+    { q: "Crítica al consecuencialismo de reglas.", a: "No explica por qué abandonar la *liability* y los derechos en la guerra; la guerra solo difiere en escala; obligaría a definir con precisión cuándo hay guerra." },
+    { q: "¿Cuál es la razón principal de la divergencia?", a: "Epistémica: casi todos creen que su guerra es justa; los injustos reclamarían los permisos de los justos." },
+    { q: "¿Qué dice McMahan sobre la inmunidad civil universal?", a: "Que quizá no tenga base moral básica (la justicia podría permitir matar a civiles muy responsables), pero un permiso legal sería desastroso: debe ser una regla jurídica absoluta." },
+    { q: "¿Cómo puede aprobar una ley que permite «asesinatos»?", a: "Permitir legalmente un acto injusto no es cometerlo; es crear condiciones en las que habrá menos violaciones de derechos." },
+    { q: "Tres propuestas para reducir la brecha.", a: "1) Teoría moral secular rigurosa del *ad bellum*; 2) difusión y educación moral de los militares; 3) un *ad bellum* jurídico detallado aplicado por un tribunal internacional imparcial." }
+  ],
+
+  test: [
+    { q: "¿Cuál es la tesis principal de McMahan?", o: ["El derecho de la guerra debe copiar ya la moral", "Moral y derecho de la guerra son distintos y hoy deben divergir, aunque el ideal sea su congruencia", "La moral de la guerra es un artefacto como el derecho", "El *jus ad bellum* es obsoleto y debe abandonarse"], r: 1, x: "Separa moral y derecho, justifica la divergencia actual y apunta a la convergencia futura." },
+    { q: "Según McMahan, la teoría clásica de la guerra justa era…", o: ["Colectivista y positivista", "Individualista y presentada como derecho natural", "Consecuencialista", "Hobbesiana"], r: 1, x: "Aplicaba a la guerra los principios entre individuos y se presentaba como derecho natural." },
+    { q: "¿Qué idea de Hobbes fundamenta la igualdad soberana de los Estados?", o: ["Que la moral se descubre", "Que no hay límite moral a las prerrogativas del soberano", "Que la guerra debe ser justa", "Que los individuos son la unidad moral"], r: 1, x: "Sin un super-soberano, los Estados no están moralmente limitados entre sí." },
+    { v: true, q: "En el s. XIX la guerra se consideraba jurídicamente un medio aceptable de política estatal.", x: "El *jus ad bellum* había decaído; Hershey (1906) lo resume." },
+    { q: "La Carta de la ONU permite el uso de la fuerza…", o: ["Siempre que haya causa justa", "Con autorización del Consejo de Seguridad o en legítima defensa ante un ataque armado", "Solo en intervenciones humanitarias", "Nunca"], r: 1, x: "Arts. 2.4 y 51. McMahan lo considera tosco." },
+    { q: "¿Qué tipo de justicia corresponde a la legítima defensa?", o: ["Retributiva", "Correctiva", "Preventiva", "Distributiva"], r: 2, x: "Redistribución *ex ante* del daño inevitable hacia el responsable." },
+    { v: false, q: "Para McMahan, el *jus in bello* jurídico es asimétrico, como la moral.", x: "Es simétrico (neutral entre combatientes justos e injustos); la moral es asimétrica." },
+    { q: "¿Qué argumento refuta el caso del voluntario polaco?", o: ["El colectivismo", "El consecuencialismo", "El consentimiento", "El epistémico"], r: 2, x: "Ponerse el uniforme no es consentir ser atacado." },
+    { q: "La objeción «alquimia moral» se dirige contra…", o: ["El consentimiento", "La defensa simétrica", "El colectivismo", "Walzer"], r: 2, x: "No se explica cómo las relaciones políticas crean permisos para dañar a otros." },
+    { q: "¿Cuál es, para McMahan, la razón principal de la divergencia entre moral y derecho?", o: ["Que hay una moral especial de la guerra", "La dificultad epistémica de saber qué guerra es justa", "Que el derecho es superior a la moral", "La voluntad de los Estados"], r: 1, x: "Los injustos reclamarían los permisos de los justos; una ley asimétrica sería ineficaz." },
+    { v: true, q: "McMahan duda que la inmunidad civil universal tenga base en la moral básica, pero defiende mantenerla como ley.", x: "Un permiso legal para atacar civiles sería abusado." },
+    { q: "Según la nota 9, a diferencia del merecimiento, la *liability* exige…", o: ["Culpa", "Consentimiento", "Eficacia instrumental", "Intención"], r: 2, x: "Dañar debe servir a un fin ulterior (prevenir, compensar). Frowe critica justo esta condición." },
+    { q: "¿Qué institución propone McMahan?", o: ["Abolir la ONU", "Un tribunal internacional imparcial que dictamine sobre el *ad bellum*", "Ejércitos privados", "Un gobierno mundial"], r: 1, x: "Idealmente antes o durante las guerras, para orientar a los combatientes." },
+    { v: false, q: "McMahan propone hacer asimétrico el *jus in bello* inmediatamente.", x: "Hoy sería contraproducente; primero hay que superar las barreras epistémicas." }
+  ],
+
+  ejercicios: [
+    { k: "Feynman", q: "Explica en 3 frases por qué McMahan cree que el derecho de la guerra no debe, por ahora, decir lo mismo que la moral.", pista: "Usa: asimetría, saber quién es el justo, abuso.", modelo: "Moralmente, el soldado que lucha por una causa injusta no tiene derecho a matar a quienes se defienden. Pero casi todos los soldados creen estar en el bando justo, así que si la ley diera permisos solo a «los justos», todos se los atribuirían. Por eso, de momento, es mejor una ley igual para todos que limite el daño, mientras se crean instituciones (como un tribunal) que permitan saber quién tiene razón.", criterios: ["Asimetría moral", "Problema epistémico", "Ley simétrica como mal menor", "Reforma institucional"] },
+    { k: "Aplicación", q: "Aplica las cinco respuestas de McMahan a la guerra de Rusia contra Ucrania (2022): ¿qué diría cada una sobre un soldado ruso que respeta el *in bello*?", pista: "Consentimiento, defensa simétrica, colectivismo, consecuencialismo, epistémica.", modelo: "Consentimiento: los soldados ucranianos «consintieron» ser atacados al alistarse (McMahan: falso, como el polaco). Defensa simétrica: el ruso puede matar porque el ucraniano le amenaza (McMahan: no puede defenderse de una defensa legítima). Colectivismo: la injusticia es de Rusia/Putin, no del soldado (McMahan: el soldado es responsable). Consecuencialismo: la regla simétrica minimiza el daño (no explica qué pasa con los derechos). Epistémica: moralmente actúa mal, pero la ley no debe castigarle porque, en general, los soldados no pueden distinguir. Es la de McMahan.", criterios: ["Las cinco posiciones", "Respuesta de McMahan a cada una", "Distinción moral / jurídico"] },
+    { k: "Ensayo", q: "¿Es coherente que un no consecuencialista apruebe una ley que permite violar derechos? Evalúa la respuesta de McMahan.", pista: "Permitir legalmente vs. cometer.", modelo: "McMahan distingue permitir legalmente un acto de cometerlo: el legislador no mata para evitar más muertes, sino que diseña condiciones en las que habrá menos violaciones de derechos. Críticas: el legislador sí elige un sistema que predeciblemente produce muertes injustas, parecido a un cálculo agregativo; un deontólogo estricto podría ver esto como usar a las víctimas. Defensa: la responsabilidad del legislador es distinta de la del agente (el derecho es un artefacto con fines). El propio McMahan admite que «hace falta decir más».", criterios: ["Formula el reto", "Respuesta de McMahan", "Crítica", "Valoración propia"] },
+    { k: "Comparación", q: "¿Qué ganaría y qué perdería el derecho internacional si adoptara la propuesta del tribunal *ad bellum*?", pista: "Piensa en legitimidad, rapidez y obediencia de los Estados.", modelo: "Ganaría: guía epistémica para los soldados, posibilidad de un *in bello* asimétrico, más justicia. Perdería o arriesgaría: politización del tribunal, decisiones lentas frente a guerras rápidas, desobediencia de grandes potencias, riesgo de que el bando declarado injusto deje de respetar el *in bello* («ya somos criminales»).", criterios: ["Ventajas", "Riesgos prácticos", "Efecto sobre el *in bello*"] }
+  ]
+};
+
+</script>
+<script>
+// Helen Frowe, "Non-Combatant Liability in War" (2014)
+window.TEXTOS = window.TEXTOS || {};
+window.TEXTOS.frowe = {
+  id: "frowe",
+  seminario: "filosofia-politica",
+  autor: "Helen Frowe",
+  titulo: "Non-Combatant Liability in War",
+  tituloEs: "La responsabilidad defensiva de los no combatientes en la guerra",
+  fuente: "En H. Frowe y G. Lang (eds.), How We Fight: Ethics in War, Oxford University Press, 2014, cap. 10, pp. 172–188.",
+  paginas: 13,
+
+  tesis: "Los no combatientes que contribuyen de forma moralmente responsable a una guerra injusta normalmente **sí** son *liable* (pierden su protección) frente a la muerte defensiva; si no debemos matarlos, no es porque no sean *liable*, sino por otras razones contingentes, como que matarlos no sirve para nada militarmente.",
+
+  parrafo: "El principio de inmunidad de los no combatientes (PNI) prohíbe atacarlos intencionadamente. Tradicionalmente se justificaba diciendo que no amenazan. Frowe lo niega: los civiles contribuyen a la guerra (votan, fabrican armas, pagan impuestos) y plantean **amenazas indirectas**. Los defensores recientes del PNI admiten esto, pero sostienen que aun así no son *liable*. Frowe refuta tres estrategias: (1) la **agencia interviniente** de Rodin (solo es *liable* el último agente de la cadena causal); (2) el **umbral causal / proporcionalidad** de McMahan y Fabre (su contribución es demasiado pequeña); y (3) la **ignorancia inevitable** de Fabre (no pueden saber si contribuyen a algo injusto). Concluye que *liability* y *permisibilidad* son cosas distintas: un civil puede ser *liable* y, aun así, ser impermisible matarlo porque no es **necesario** (no aporta ventaja militar). Pero eso es un hecho contingente, no un principio moral profundo.",
+
+  preguntasPrevias: [
+    {
+      q: "Un obrero de una fábrica de municiones del bando agresor, ¿ha hecho algo que le haga perder su protección frente a un ataque?",
+      a: "Frowe dice que **sí**: si es moralmente responsable de contribuir a una amenaza injusta, es *liable* a la muerte defensiva. La ley (Manual británico) dice que no, porque no «participa directamente en las hostilidades»."
+    },
+    {
+      q: "Si alguien es *liable* a que le maten, ¿es automáticamente permisible matarle?",
+      a: "**No.** Esta es la clave del texto: *liability* ≠ permisibilidad. Puede ser *liable* y aun así ser impermisible matarle, por ejemplo porque no es necesario."
+    },
+    {
+      q: "¿Importa cuánto contribuyes a una amenaza o solo si contribuyes?",
+      a: "Para Frowe importa **si** contribuyes (de forma responsable), no **cuánto**. Lo ilustra con el caso *Hit*: cada mafioso que pone unas libras para pagar al asesino es *liable*."
+    }
+  ],
+
+  secciones: [
+    { t: "10.1 Introducción", p: [
+      "El PNI se defiende tradicionalmente diciendo que los no combatientes son «materialmente inocentes»: no amenazan.",
+      "Hoy eso es implausible: contribuyen sustancialmente al esfuerzo bélico.",
+      "Tesis: si son moralmente responsables de esas contribuciones y su guerra es injusta, pueden ser *liable* a la muerte defensiva.",
+      "Anticipa la conclusión: *liability* ≠ permisibilidad. La protección de los civiles debe buscarse por otras vías (p. ej. necesidad militar)."
+    ]},
+    { t: "10.2 Preliminares", p: [
+      "Cuatro afirmaciones: (1) las reglas de la legítima defensa fundamentan las reglas de matar en la guerra (se asume); (2) quien plantea una **amenaza indirecta** puede ser *liable*; (3) los no combatientes a menudo plantean amenazas indirectas; (4) por tanto, a menudo son *liable*.",
+      "**Amenaza directa**: te va a infligir el daño (dispararte, caer sobre ti). **Amenaza indirecta**: te pone en peligro de otro modo (p. ej. bloquea tu vía de escape).",
+      "Amenaza **injusta**: dirigida a alguien que no es *liable*.",
+      "Ser ***liable*** a un daño: infligírselo no le agravia; y no puede defenderse legítimamente contra él."
+    ]},
+    { t: "10.3 La guerra", p: [
+      "Los civiles contribuyen política (votar, prensa belicista), material (armas, ropa, comida), tecnológica e impositivamente.",
+      "El *Manual of the Law of Armed Conflict* británico distingue «participar directamente en las hostilidades» de «contribuir al esfuerzo bélico»: el obrero de municiones no es objetivo legítimo.",
+      "Frowe: la distinción es artificial. Si «hostilidades» = disparar en el frente, la mayoría de combatientes tampoco participa; si incluye inteligencia, logística, etc., excluir a civiles con papeles análogos es arbitrario.",
+      "Por eso los defensores recientes del PNI ya no niegan que los civiles contribuyan: argumentan que no son *liable* **aunque** contribuyan.",
+      "Supuesto: guerra de agresión injusta vs. guerra defensiva justa. La tesis solo afecta a los no combatientes del bando **injusto**."
+    ]},
+    { t: "10.4 Agencia interviniente (Rodin)", p: [
+      "Rodin: solo es *liable* quien está «actualmente implicado» en un ataque injusto. Si varios agentes superan el umbral de responsabilidad mínima, solo cuenta el **último** de la cadena causal (causa próxima).",
+      "Casos de Rodin: *Naughty Minister* y *Provocation*: Victim no puede matar al Ministro ni al Villano, solo al agresor inmediato.",
+      "Aplicado a la guerra: los combatientes «intervienen» después de los civiles y absorben su *liability*.",
+      "Objeción 1: deja fuera a combatientes claros (quien carga el arma de su compañero; altos mandos). El «ajuste» de Rodin (todos los que tienen un papel en la estructura de mando) es *ad hoc*: incluiría al gobierno y a los obreros de fábricas estatales.",
+      "Objeción 2: Rodin critica a Gewirth con el caso *Coercion* (el nazi obliga al alcalde a disparar): la responsabilidad es **compartible**. Lo mismo vale para la *liability*: el ciudadano podría matar al nazi.",
+      "Objeción 3 (caso *Goading* del propio Rodin): lo que importa es si la **situación amenazante a la que contribuiste** sigue vigente, no si eres la causa próxima.",
+      "Variante del consentimiento («los combatientes asumen el riesgo»): la *liability* defensiva, como la penal, **no se transfiere por acuerdo**. Un pacto pragmático de no atacar civiles no borra su *liability*."
+    ]},
+    { t: "10.5 Umbrales causales y proporcionalidad", p: [
+      "McMahan (2009): aunque una amenaza indirecta puede hacerte *liable*, matar a civiles sería **desproporcionado** porque su responsabilidad es débil.",
+      "Frowe: McMahan permite matar a la Propietaria totalmente excusada del caso *Mistake* y dice que las variaciones de responsabilidad entre combatientes son irrelevantes si el daño es grave. ¿Por qué no con civiles?",
+      "McMahan usa «responsabilidad» en dos sentidos: con combatientes = grado de culpa; con civiles = **cantidad de contribución causal**. En realidad defiende un **umbral causal**.",
+      "Fabre (2009) igual: la contribución individual debe superar un umbral; hacer piezas de armas no basta.",
+      "Contraejemplo *Hit*: cada mafioso aporta unas libras para pagar al asesino → cada uno es *liable*. La proporcionalidad mira la **gravedad del daño amenazado y de la fuerza defensiva**, no cuánto aporta cada uno.",
+      "Cadena de montaje vs. producción en tándem: el umbral daría resultados distintos para casos moralmente iguales. Repartir la carga causal no disuelve la *liability*."
+    ]},
+    { t: "10.6 Ignorancia", p: [
+      "Fabre: solo eres *liable* si eres moralmente responsable; la **ignorancia inevitable** (de que amenazas o de que la amenaza es injusta) anula esa responsabilidad.",
+      "Las guerras son mixtas (fases justas e injustas): el civil no puede saber si su aportación servirá a fines justos o injustos.",
+      "Objeción hacer/permitir: ante la duda, presunción de **no contribuir** a un daño injusto. Fabre: eso solo «muerde» al principio; e incluso quien contribuye indebidamente no es *liable* (test de adecuación).",
+      "Frowe: la presunción está diseñada precisamente para la incertidumbre; no se puede anular invocando esa misma incertidumbre. Hay que priorizar **no dañar** al inocente sobre **ayudar** al inocente."
+    ]},
+    { t: "10.7 Liability e (in)eficacia militar", p: [
+      "La regla de **necesidad** (*jus in bello*): el daño debe producir ventaja militar. Matar civiles rara vez la produce.",
+      "McMahan va más allá: la necesidad es **interna** a la *liability*: solo eres *liable* a un daño si este es instrumental para evitar la amenaza. Un votante cuya contribución ya pasó no es *liable*.",
+      "Frowe lo rechaza con *Lucky Escape*: el Asesino sigue siendo *liable* aunque la víctima tenga paracaídas. Si no lo fuera, podría defenderse legítimamente contra la víctima: absurdo.",
+      "La *liability* **mira hacia atrás** (lo que has hecho) y no aparece y desaparece por factores ajenos. Lo que varía es la **permisibilidad**."
+    ]},
+    { t: "10.8 Conclusión", p: [
+      "Los argumentos habituales a favor del PNI fracasan porque intentan mostrar que los civiles no pueden ser *liable*.",
+      "Los no combatientes a veces son *liable*: son moralmente responsables de amenazas letales injustas.",
+      "Matar a un civil puede ser impermisible por otras razones (no sirve a ningún fin militar), pero eso es contingente. Si sirve a la guerra justa y el civil es *liable*, matarlo **no es incorrecto**."
+    ]}
+  ],
+
+  mapa: { t: "Liability de los no combatientes (Frowe)", c: [
+    { t: "Punto de partida", c: [
+      { t: "PNI: prohibido atacar civiles" },
+      { t: "Base tradicional: no amenazan" },
+      { t: "Falso: hacen contribuciones" }
+    ]},
+    { t: "Conceptos", c: [
+      { t: "Amenaza directa / indirecta" },
+      { t: "Amenaza injusta" },
+      { t: "Liable: dañarle no le agravia" },
+      { t: "Liability ≠ permisibilidad" }
+    ]},
+    { t: "Defensas del PNI refutadas", c: [
+      { t: "Agencia interviniente (Rodin)", c: [
+        { t: "Ad hoc con mandos" },
+        { t: "Coercion: liability compartible" },
+        { t: "Consentimiento no transfiere" }
+      ]},
+      { t: "Umbral causal (McMahan, Fabre)", c: [
+        { t: "Caso Hit" },
+        { t: "Montaje vs tándem" }
+      ]},
+      { t: "Ignorancia (Fabre)", c: [
+        { t: "Presunción de no contribuir" }
+      ]},
+      { t: "Necesidad interna (McMahan)", c: [
+        { t: "Lucky Escape" },
+        { t: "Liability mira atrás" }
+      ]}
+    ]},
+    { t: "Conclusión", c: [
+      { t: "Civiles responsables: liable" },
+      { t: "Protección = contingente" },
+      { t: "Si es útil y liable: no es incorrecto" }
+    ]}
+  ]},
+
+  argumento: [
+    { k: "premisa", id: "P1", t: "Las reglas de la legítima defensa fundamentan las reglas para matar en la guerra (se asume)." },
+    { k: "premisa", id: "P2", t: "Quien es moralmente responsable de una amenaza injusta, aunque sea indirecta, puede ser *liable* a la muerte defensiva." },
+    { k: "premisa", id: "P3", t: "Los no combatientes del bando injusto contribuyen de forma moralmente responsable a amenazas letales injustas (votan, fabrican armas, financian)." },
+    { k: "conclusion", id: "C1", t: "Por tanto, esos no combatientes son a menudo *liable* a la muerte defensiva." },
+    { k: "objecion", id: "O1", t: "Rodin: solo es *liable* el último agente de la cadena causal (los combatientes absorben la *liability*)." },
+    { k: "respuesta", id: "R1", t: "La *liability*, como la responsabilidad, es compartible (*Coercion*); importa si la situación amenazante a la que contribuiste sigue vigente (*Goading*). Y no se transfiere por acuerdo." },
+    { k: "objecion", id: "O2", t: "McMahan / Fabre: su contribución es demasiado pequeña; matarlos sería desproporcionado (umbral causal)." },
+    { k: "respuesta", id: "R2", t: "*Hit*: repartir la carga causal no disuelve la *liability*. La proporcionalidad mira la gravedad del daño, no la cuantía de la aportación." },
+    { k: "objecion", id: "O3", t: "Fabre: su ignorancia inevitable anula la responsabilidad moral." },
+    { k: "respuesta", id: "R3", t: "La presunción de no contribuir existe justo para la incertidumbre; no se puede anular invocando esa incertidumbre." },
+    { k: "objecion", id: "O4", t: "McMahan: la necesidad es interna a la *liability*; si matarle no sirve, no es *liable*." },
+    { k: "respuesta", id: "R4", t: "*Lucky Escape*: la *liability* mira hacia atrás; la necesidad afecta a la permisibilidad, no a la *liability*." },
+    { k: "conclusion", id: "C2", t: "La inmunidad de los civiles no puede basarse en su falta de *liability*. Matar a un civil puede ser impermisible por innecesario, pero eso es contingente." }
+  ],
+
+  conceptos: [
+    { t: "Principio de inmunidad de los no combatientes (PNI)", en: "Principle of non-combatant immunity", d: "Es impermisible atacar intencionadamente a no combatientes en la guerra, aunque pertenezcan al bando injusto. Se considera universal.", e: "Prohíbe bombardear a propósito un barrio residencial del país agresor." },
+    { t: "Liability (ser «liable» a un daño)", en: "Liability to defensive harm", d: "Una persona es *liable* a un daño si infligírselo no la agravia (no viola sus derechos). Además, no puede defenderse legítimamente contra ese daño.", e: "Un agresor culpable es *liable* a que su víctima lo mate en defensa propia." },
+    { t: "Amenaza directa", en: "Direct threat", d: "Quien va a infligirte él mismo el daño.", e: "Te dispara, te envenena, cae sobre ti." },
+    { t: "Amenaza indirecta", en: "Indirect threat", d: "Quien no te inflige el daño, pero te pone en peligro de otro modo.", e: "Bloquea tu vía de escape; fabrica el arma con la que te dispararán." },
+    { t: "Amenaza injusta", en: "Unjust threat", d: "Amenaza dirigida a alguien que no es *liable* a sufrir ese daño.", e: "Los soldados de una guerra de agresión amenazan injustamente a los defensores." },
+    { t: "Liability ≠ permisibilidad", en: "Liability vs. permissibility", d: "Que alguien sea *liable* no implica que sea permisible dañarle. Puede haber otras razones (falta de necesidad) que lo hagan impermisible. Es la idea central del texto.", e: "*Lucky Escape*: el Asesino es *liable*, pero quizá la víctima debería saltar en paracaídas." },
+    { t: "Inocencia material", en: "Material innocence", d: "Base tradicional del PNI: los no combatientes no amenazan, no están «haciendo daño» (lat. *nocentes* = los que dañan).", e: "Frowe la considera *prima facie* implausible." },
+    { t: "Participación directa en las hostilidades", en: "Direct part in hostilities", d: "Criterio jurídico (Manual británico, 2004): solo quienes participan directamente pueden ser atacados; trabajar en una fábrica de municiones no cuenta.", e: "Frowe: distinción «totalmente artificial»." },
+    { t: "Principio de agencia interviniente", en: "Principle of intervening agency (Rodin)", d: "Si varios agentes crean una amenaza injusta y todos superan un umbral de responsabilidad mínima, solo el último de la cadena causal está «actualmente implicado» y es *liable*.", e: "En *Provocation*, solo el Atacante, no el Villano que lo provocó." },
+    { t: "Umbral causal", en: "Causal threshold", d: "Idea (McMahan, Fabre) de que la contribución individual debe ser suficientemente grande para generar *liability*.", e: "Fabre: hacer piezas de armas no basta. Frowe lo refuta con *Hit*." },
+    { t: "Proporcionalidad", en: "Proportionality", d: "El daño defensivo no debe ser excesivo respecto al daño que se evita. Para Frowe depende de la gravedad del daño amenazado y de la fuerza usada, no de cuánto contribuye cada uno.", e: "Matar a un mafioso para salvar tu vida es proporcionado aunque solo pusiera unas libras." },
+    { t: "Ignorancia inevitable", en: "Unavoidable ignorance (Fabre)", d: "No poder saber que uno plantea una amenaza o que esta es injusta. Para Fabre anula la responsabilidad moral y, con ella, la *liability*.", e: "La costurera de uniformes no sabe si se usarán en una fase justa o injusta de la guerra." },
+    { t: "Distinción hacer / permitir", en: "Doing/allowing distinction", d: "Causar un daño es peor que permitirlo. Genera una presunción: ante la duda, no contribuir a un daño injusto, aunque así no se rescate a otros.", e: "Base de la réplica de Frowe a Fabre." },
+    { t: "Necesidad militar", en: "Military necessity (jus in bello)", d: "El daño en la guerra debe producir una ventaja militar. Para McMahan es interna a la *liability*; para Frowe es una condición aparte de permisibilidad.", e: "Matar a quien votó por la guerra no aporta ventaja militar." },
+    { t: "Jus ad bellum / jus in bello", en: "", d: "*Ad bellum*: justicia del recurso a la guerra. *In bello*: justicia en la conducción de la guerra (discriminación, necesidad, proporcionalidad).", e: "Frowe solo habla de civiles del bando *ad bellum* injusto." }
+  ],
+
+  casos: [
+    { n: "Naughty Minister", de: "Rodin", d: "Por recortes fraudulentos del Ministro, sale de prisión un Criminal que intenta matar a Víctima. Víctima puede salvarse matando al Criminal o arrollando mortalmente al Ministro.", prueba: "Rodin: solo puede matar al Criminal (causa próxima). Ilustra la agencia interviniente." },
+    { n: "Provocation", de: "Rodin", d: "El Villano provoca culpablemente al Atacante para que ataque a Víctima. Víctima puede matar al Atacante o al Villano.", prueba: "Rodin: el Villano no es *liable* porque el Atacante «interviene» después." },
+    { n: "Coercion", de: "Cheyney Ryan (usado por Rodin)", d: "Tras ocupar un pueblo, un nazi obliga al Alcalde a disparar a un Ciudadano bajo amenaza de matar a muchos más.", prueba: "La responsabilidad es compartible: el Alcalde no libera al nazi. Frowe: también la *liability*: el Ciudadano podría matar al nazi." },
+    { n: "Goading", de: "Rodin", d: "El Villano provoca deliberadamente a Víctima para que le ataque y así poder matarla «en defensa propia».", prueba: "El Villano no puede alegar legítima defensa porque creó la situación amenazante. Frowe: importa si esa situación sigue vigente, no la proximidad causal." },
+    { n: "Mistake", de: "McMahan", d: "La Propietaria confunde al gemelo inocente con un asesino fugado y, aterrada, se lanza contra él con un cuchillo.", prueba: "McMahan permite que el Gemelo la mate aunque ella esté totalmente excusada (responsabilidad débil). Frowe: ¿por qué entonces no con civiles débilmente responsables?" },
+    { n: "Hit", de: "Frowe", d: "El Jefe mafioso hace una colecta entre todos sus hombres para pagar a un asesino carísimo. Cada uno pone unas pocas libras.", prueba: "Cada mafioso es *liable* aunque su aportación sea mínima. Importa **si** contribuyes, no **cuánto**. Refuta el umbral causal." },
+    { n: "Cadena de montaje vs. tándem", de: "Frowe", d: "Una fábrica produce 200 armas al día: o cada obrero hace una pieza de todas, o cada uno fabrica un arma entera.", prueba: "Un umbral causal haría *liable* solo a los del tándem. Diferencia implausible: todos aportan armas al bando injusto." },
+    { n: "Lucky Escape", de: "Frowe", d: "Un Asesino persigue a Víctima para matarla. Víctima tiene un paracaídas y puede escapar sin matarlo.", prueba: "El Asesino sigue siendo *liable* aunque matarle no sea necesario. La necesidad afecta a la permisibilidad, no a la *liability*." }
+  ],
+
+  autores: [
+    { n: "David Rodin", pos: "Agencia interviniente: solo la causa próxima está «actualmente implicada» y es *liable*.", resp: "Ad hoc, contradice su propia crítica a Gewirth; la *liability* es compartible y no se transfiere por acuerdo." },
+    { n: "Jeff McMahan", pos: "Matar civiles es desproporcionado (responsabilidad débil) y además innecesario; la necesidad es interna a la *liability*.", resp: "Confunde responsabilidad con contribución causal; *Lucky Escape* muestra que la necesidad no afecta a la *liability*." },
+    { n: "Cécile Fabre", pos: "Umbral causal individual + ignorancia inevitable: los civiles no son, en general, *liable*.", resp: "*Hit* y montaje/tándem contra el umbral; la presunción de no contribuir neutraliza la ignorancia." },
+    { n: "UK Ministry of Defence (2004)", pos: "Solo la «participación directa en las hostilidades» hace atacable; el obrero de municiones no.", resp: "Distinción artificial sin diferencia moral relevante." },
+    { n: "Mavrodes, Alexander", pos: "No hay diferencia moralmente significativa entre las contribuciones de combatientes y civiles.", resp: "Frowe coincide: es una observación antigua." }
+  ],
+
+  citas: [
+    { c: "Non-combatants who contribute to an unjust war usually *are* so liable, since they are morally responsible for unjust threats.", p: "Resumen", n: "La tesis en una línea." },
+    { c: "Permissibility and liability are not two sides of the same coin.", p: "p. 173", n: "Distinción clave del texto." },
+    { c: "Liability to defensive harm doesn't seem like something we get to allocate by agreement.", p: "p. 179", n: "Contra el consentimiento de los combatientes." },
+    { c: "What matters for liability is whether one contributes, and not how much one contributes.", p: "p. 182", n: "Conclusión del caso *Hit*." },
+    { c: "One must prioritise not harming the innocent over aiding the innocent.", p: "p. 185", n: "Réplica a la ignorancia de Fabre." },
+    { c: "Liability is based on facts about what a person has done, and these facts are not changed by variations in the usefulness of killing them.", p: "p. 186", n: "La *liability* mira hacia atrás." }
+  ],
+
+  errores: [
+    "Pensar que Frowe defiende atacar civiles. Defiende que son *liable*, no que sea siempre permisible matarlos.",
+    "Confundir *liability* con culpa o merecimiento (*desert*): es no ser agraviado por un daño defensivo.",
+    "Creer que su tesis vale para los civiles de ambos bandos: solo para los que contribuyen al bando injusto.",
+    "Atribuir a McMahan que los civiles nunca son *liable*: acepta que la amenaza indirecta puede generar *liability*; discute proporcionalidad y necesidad."
+  ],
+
+  tarjetas: [
+    { q: "¿Qué dice el PNI?", a: "Es impermisible atacar intencionadamente a no combatientes en la guerra, aunque pertenezcan al bando injusto." },
+    { q: "¿Cuál es la base tradicional del PNI y por qué la rechaza Frowe?", a: "Que los civiles no amenazan (inocencia material). Falso: contribuyen política, material, tecnológica y económicamente; plantean amenazas indirectas." },
+    { q: "Define «ser liable a un daño» según Frowe.", a: "Infligirle ese daño no la agravia; y no puede defenderse legítimamente contra él." },
+    { q: "Amenaza directa vs. indirecta.", a: "Directa: te inflige el daño. Indirecta: te pone en peligro de otro modo (p. ej., bloquea tu huida, fabrica el arma)." },
+    { q: "Las cuatro afirmaciones de Frowe (10.2).", a: "1) La legítima defensa fundamenta matar en la guerra; 2) las amenazas indirectas pueden generar *liability*; 3) los civiles plantean amenazas indirectas; 4) por tanto, a menudo son *liable*." },
+    { q: "¿Qué critica Frowe del Manual británico?", a: "Distinguir «participar directamente en las hostilidades» de «contribuir al esfuerzo bélico»: es artificial y arbitrario." },
+    { q: "Principio de agencia interviniente (Rodin).", a: "Si varios agentes crean una amenaza injusta, solo el último en la cadena causal está «actualmente implicado» y es *liable*." },
+    { q: "¿Cómo usa Frowe el caso Coercion contra Rodin?", a: "Rodin admite que la responsabilidad es compartible (el alcalde no libera al nazi); lo mismo vale para la *liability*: el ciudadano podría matar al nazi." },
+    { q: "¿Pueden los combatientes asumir la liability de los civiles por consentimiento?", a: "No. La *liability* defensiva, como la penal, no se transfiere por acuerdo." },
+    { q: "¿Qué muestra el caso Hit?", a: "Que importa si contribuyes a una amenaza letal, no cuánto. Cada mafioso que paga unas libras es *liable*. Refuta el umbral causal." },
+    { q: "¿Qué doble sentido de «responsabilidad» detecta Frowe en McMahan?", a: "Con combatientes: grado de culpa. Con civiles: cantidad de contribución causal." },
+    { q: "Argumento de Fabre basado en la ignorancia.", a: "Las guerras son mixtas; el civil no puede saber si contribuye a fines justos o injustos; esa ignorancia inevitable anula su responsabilidad y su *liability*." },
+    { q: "Réplica de Frowe a Fabre sobre la ignorancia.", a: "La presunción de no contribuir (hacer/permitir) está pensada precisamente para la incertidumbre; hay que priorizar no dañar al inocente sobre ayudarle." },
+    { q: "¿Qué es la condición interna de necesidad de McMahan?", a: "Solo eres *liable* a un daño si este es instrumental para evitar la amenaza de la que eres responsable." },
+    { q: "¿Qué prueba Lucky Escape?", a: "El Asesino sigue siendo *liable* aunque matarle no sea necesario (la víctima tiene paracaídas). La *liability* mira hacia atrás; la necesidad afecta a la permisibilidad." },
+    { q: "Conclusión final de Frowe.", a: "Los civiles responsables son *liable*; su protección depende de razones contingentes (no sirve militarmente). Si matar a un civil *liable* sirve a la guerra justa, no es incorrecto." }
+  ],
+
+  test: [
+    { q: "¿Cuál es la tesis central de Frowe?", o: ["Los no combatientes nunca pueden ser *liable* porque no amenazan", "Los no combatientes que contribuyen responsablemente a una guerra injusta suelen ser *liable* a la muerte defensiva", "Es siempre permisible matar a no combatientes del bando injusto", "El PNI debe abolirse del derecho internacional"], r: 1, x: "Defiende la *liability*, no la permisibilidad. No propone abolir el PNI ni que siempre sea permisible matar civiles." },
+    { q: "Según Frowe, ser *liable* a un daño significa…", o: ["Merecer un castigo", "Que infligírtelo no te agravia y no puedes defenderte legítimamente contra él", "Estar legalmente obligado a compensar", "Haber consentido el riesgo"], r: 1, x: "Definición de 10.2. No es merecimiento (*desert*) ni consentimiento." },
+    { q: "Quien bloquea la única vía de escape de alguien plantea una amenaza…", o: ["Directa", "Indirecta", "Justa", "Inexistente"], r: 1, x: "No inflige el daño, pero pone en peligro de otro modo: amenaza indirecta." },
+    { v: true, q: "Para Frowe, *liability* y permisibilidad «no son dos caras de la misma moneda».", x: "Es la distinción central (p. 173): se puede ser *liable* y que sea impermisible dañarte." },
+    { v: false, q: "La tesis de Frowe se aplica por igual a los no combatientes de ambos bandos de una guerra.", x: "Solo a los que contribuyen al bando injusto (guerra de agresión vs. defensa justa)." },
+    { q: "¿Qué sostiene el principio de agencia interviniente de Rodin?", o: ["Toda contribución causal genera *liability*", "Solo el último agente responsable de la cadena causal es *liable*", "Los civiles son *liable* si votaron la guerra", "La *liability* se reparte proporcionalmente"], r: 1, x: "El agente próximo «supersede» a los remotos y absorbe la *liability*." },
+    { q: "¿Qué caso usa Frowe para mostrar que la *liability* es compartible?", o: ["Hit", "Lucky Escape", "Coercion", "Mistake"], r: 2, x: "En *Coercion* tanto el nazi como el alcalde son responsables; el ciudadano podría defenderse contra ambos." },
+    { q: "El caso *Hit* sirve para refutar…", o: ["La agencia interviniente", "El umbral causal", "El argumento de la ignorancia", "La necesidad interna"], r: 1, x: "Muestra que repartir la carga causal no disuelve la *liability*." },
+    { v: false, q: "Según Frowe, la proporcionalidad depende de cuánto contribuye cada persona a la amenaza.", x: "Depende de la gravedad del daño amenazado y de la fuerza usada para evitarlo." },
+    { q: "¿Cómo responde Frowe al argumento de la ignorancia de Fabre?", o: ["Niega que las guerras tengan fases justas", "La presunción de no contribuir existe precisamente para la incertidumbre", "Afirma que los civiles siempre saben lo que hacen", "Acepta el argumento"], r: 1, x: "No se puede anular una presunción pensada para la incertidumbre invocando esa misma incertidumbre." },
+    { q: "*Lucky Escape* muestra que…", o: ["La necesidad es interna a la *liability*", "La *liability* mira hacia atrás y persiste aunque dañar no sea necesario", "El asesino puede defenderse", "La víctima debe siempre huir"], r: 1, x: "El Asesino sigue siendo *liable*; la falta de necesidad afecta a la permisibilidad." },
+    { q: "¿Qué distingue el Manual británico que Frowe critica?", o: ["Combatientes legales e ilegales", "Participar directamente en las hostilidades vs. contribuir al esfuerzo bélico", "Guerra justa e injusta", "Daño intencionado y colateral"], r: 1, x: "Frowe la considera artificial: la mayoría de combatientes tampoco dispara en el frente." },
+    { v: true, q: "Frowe acusa a McMahan de usar «responsabilidad» como culpa con combatientes y como contribución causal con civiles.", x: "Por eso dice que McMahan defiende en realidad un umbral causal." },
+    { q: "Según la conclusión, una razón para no matar civiles que sí es válida es…", o: ["Que son materialmente inocentes", "Que matarlos a menudo no sirve a ningún propósito militar", "Que su responsabilidad es nula", "Que están protegidos por consentimiento"], r: 1, x: "Pero es contingente: a veces sí servirá." }
+  ],
+
+  ejercicios: [
+    { k: "Feynman", q: "Explica la tesis de Frowe en 3 frases a alguien que nunca ha estudiado ética de la guerra.", pista: "Usa: contribución, responsabilidad, *liable*, permisible.", modelo: "Los civiles de un país que libra una guerra injusta no son tan «inocentes» como se dice: fabrican armas, votan y pagan la guerra. Si lo hacen sabiendo y queriendo, pierden su protección moral frente a la defensa de las víctimas, igual que el que paga a un sicario. Pero que pierdan esa protección no significa que se les pueda matar sin más: solo sería permisible si matarlos sirviera de verdad para frenar la agresión, cosa que rara vez ocurre.", criterios: ["Contribución de los civiles", "Responsabilidad moral como condición", "Solo bando injusto", "*Liability* ≠ permisibilidad", "Necesidad como límite contingente"] },
+    { k: "Aplicación", q: "Un periodista del país agresor escribe artículos que enardecen a la población a favor de la guerra. ¿Es *liable* según Frowe? ¿Sería permisible matarle?", pista: "Distingue los dos niveles de la pregunta.", modelo: "Según Frowe, probablemente sí es *liable*: hace una contribución política responsable a una amenaza injusta (amenaza indirecta) y la cuantía no importa (*Hit*). Pero la permisibilidad es otra cuestión: si matarle no reduce la amenaza (sus artículos ya están publicados), no es necesario y sería impermisible. Para McMahan, en cambio, ni siquiera sería *liable* porque falta la condición interna de necesidad y su contribución es trivial.", criterios: ["Amenaza indirecta política", "Irrelevancia de la cuantía", "Necesidad → permisibilidad", "Contraste con McMahan"] },
+    { k: "Ensayo", q: "¿Es convincente la réplica de Frowe a Rodin? Construye la mejor defensa posible de Rodin y evalúala.", pista: "Piensa en el valor pragmático de una línea clara entre combatientes y civiles.", modelo: "La mejor defensa de Rodin: la causa próxima ofrece un criterio claro y verificable que limita la violencia; sin él, casi toda la población enemiga sería *liable*. Frowe respondería que eso es un argumento pragmático sobre reglas, no sobre *liability*: el propio Rodin acepta (*Coercion*, *Goading*) que la responsabilidad es compartible y que importa la contribución a una situación vigente. Evaluación: Frowe gana en el plano de la *liability*, pero la defensa de Rodin puede reubicarse como argumento sobre permisibilidad o sobre el diseño del derecho (lo que conecta con McMahan, *Laws of War*).", criterios: ["Reconstrucción caritativa de Rodin", "Coercion / Goading", "Distinción moral vs. pragmático", "Conexión con McMahan"] },
+    { k: "Contraejemplo", q: "Diseña un caso que ponga en apuros la tesis de Frowe de que «importa si contribuyes, no cuánto».", pista: "Piensa en contribuciones minúsculas y muy lejanas (un céntimo de impuestos).", modelo: "Un jubilado del país agresor paga, mediante el IVA del pan, 0,0001 € al presupuesto militar. Si solo importa *si* contribuye, sería *liable* a ser matado, lo que parece absurdo. Frowe podría responder que falta responsabilidad moral (no elige contribuir a la guerra) o que la contribución no es a una amenaza letal concreta; pero entonces reaparece algo parecido a un umbral, ahora de responsabilidad.", criterios: ["Caso concreto", "Identifica la tensión", "Respuesta posible de Frowe", "Evalúa si reintroduce un umbral"] }
+  ]
+};
+
+</script>
+<!-- Motor -->
+<script>
+/* Seminarios — app de estudio. Sin dependencias. */
+(function () {
+  "use strict";
+
+  var SEMS = window.SEMINARIOS || [];
+  var TXT = window.TEXTOS || {};
+  var app = document.getElementById("app");
+  var crumb = document.getElementById("crumb");
+  var timers = [];
+
+  /* ---------- utilidades ---------- */
+  function esc(s) {
+    return String(s).replace(/[&<>"]/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
+    });
+  }
+  function md(s) {
+    return esc(s)
+      .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+      .replace(/\*(.+?)\*/g, "<em>$1</em>");
+  }
+  function h(tag, props) {
+    var el = document.createElement(tag);
+    props = props || {};
+    Object.keys(props).forEach(function (k) {
+      var v = props[k];
+      if (v == null || v === false) return;
+      if (k === "class") el.className = v;
+      else if (k === "html") el.innerHTML = v;
+      else if (k.slice(0, 2) === "on") el.addEventListener(k.slice(2), v);
+      else el.setAttribute(k, v === true ? "" : v);
+    });
+    for (var i = 2; i < arguments.length; i++) add(el, arguments[i]);
+    return el;
+  }
+  function add(el) {
+    for (var i = 1; i < arguments.length; i++) {
+      var kid = arguments[i];
+      if (kid == null || kid === false) continue;
+      if (Array.isArray(kid)) kid.forEach(function (k) { add(el, k); });
+      else el.appendChild(typeof kid === "object" ? kid : document.createTextNode(String(kid)));
+    }
+    return el;
+  }
+  function clear(el) { while (el.firstChild) el.removeChild(el.firstChild); return el; }
+  function shuffle(a) {
+    a = a.slice();
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = a[i]; a[i] = a[j]; a[j] = t;
+    }
+    return a;
+  }
+  function today(offset) {
+    var d = new Date();
+    d.setHours(12, 0, 0, 0);
+    if (offset) d.setDate(d.getDate() + offset);
+    return d.toISOString().slice(0, 10);
+  }
+  function fmtDate(iso) {
+    if (!iso) return "";
+    var diff = Math.round((new Date(iso + "T12:00:00") - new Date(today() + "T12:00:00")) / 864e5);
+    if (diff === 0) return "hoy";
+    if (diff === 1) return "mañana";
+    if (diff === -1) return "ayer";
+    if (diff > 1) return "en " + diff + " días";
+    return "hace " + -diff + " días";
+  }
+  function toast(msg) {
+    var t = h("div", { class: "toast", role: "status" }, msg);
+    document.body.appendChild(t);
+    setTimeout(function () { t.remove(); }, 2200);
+  }
+
+  /* ---------- almacenamiento local ---------- */
+  var KEY = "seminarios:v1";
+  var mem = {};
+  function loadStore() {
+    try { mem = JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { mem = {}; }
+  }
+  function saveStore() {
+    try { localStorage.setItem(KEY, JSON.stringify(mem)); } catch (e) { /* sin almacenamiento */ }
+  }
+  function st(id) {
+    mem[id] = mem[id] || { cards: {}, notes: {} };
+    mem[id].cards = mem[id].cards || {};
+    mem[id].notes = mem[id].notes || {};
+    return mem[id];
+  }
+  loadStore();
+
+  /* ---------- tarjetas: repetición espaciada (Leitner) ---------- */
+  var INTERVAL = [0, 1, 3, 7, 14, 30];
+  function cardState(id, i) { return st(id).cards[i] || { box: 0, due: today() }; }
+  function dueCount(id) {
+    var t = TXT[id];
+    if (!t) return 0;
+    var n = 0, now = today();
+    t.tarjetas.forEach(function (_, i) { if (cardState(id, i).due <= now) n++; });
+    return n;
+  }
+
+  /* ---------- enrutado por hash ---------- */
+  var TABS = [
+    ["ruta", "Ruta 20′"], ["resumen", "Resumen"], ["mapa", "Mapa"], ["esquema", "Esquema"],
+    ["conceptos", "Conceptos"], ["casos", "Casos"], ["debate", "Debate"],
+    ["tarjetas", "Tarjetas"], ["test", "Test"], ["ejercicios", "Ejercicios"], ["citas", "Citas"]
+  ];
+  function go(hash) {
+    if (location.hash.slice(1) === hash) render(); else location.hash = hash;
+  }
+  function render() {
+    timers.forEach(clearInterval); timers = [];
+    var hsh = location.hash.slice(1);
+    clear(app);
+    window.scrollTo(0, 0);
+    if (hsh === "metodo") return viewMethod();
+    if (hsh.indexOf("s-") === 0) return viewSeminar(hsh.slice(2));
+    if (hsh.indexOf("t-") === 0) {
+      var parts = hsh.slice(2).split("-");
+      if (TXT[parts[0]]) return viewText(parts[0], parts[1] || defaultTab(parts[0]));
+    }
+    viewHome();
+  }
+  function defaultTab(id) { return st(id).ruta ? "resumen" : "ruta"; }
+  function setCrumb(parts) {
+    clear(crumb);
+    parts.forEach(function (p, i) {
+      if (i) add(crumb, " / ");
+      add(crumb, p[1] ? h("a", { href: "#" + p[1], style: "color:inherit" }, p[0]) : p[0]);
+    });
+  }
+
+  /* ---------- vista: inicio ---------- */
+  function progressChips(id) {
+    var s = st(id), t = TXT[id], chips = [];
+    chips.push(s.ruta ? h("span", { class: "chip ok" }, "Ruta ✓ " + fmtDate(s.ruta)) : h("span", { class: "chip off" }, "Ruta pendiente"));
+    if (s.test) chips.push(h("span", { class: "chip" + (s.test.best >= 80 ? " ok" : "") }, "Test " + s.test.best + "%"));
+    var due = dueCount(id);
+    if (s.ruta || Object.keys(s.cards).length) {
+      chips.push(due ? h("span", { class: "chip" }, due + " tarjetas hoy") : h("span", { class: "chip ok" }, "Tarjetas al día"));
+    } else {
+      chips.push(h("span", { class: "chip off" }, t.tarjetas.length + " tarjetas"));
+    }
+    return h("div", { class: "chips" }, chips);
+  }
+  function textItem(id) {
+    var t = TXT[id];
+    return h("a", { class: "item", href: "#t-" + id },
+      h("div", null, h("div", { class: "who" }, t.autor)),
+      h("span", { class: "go", "aria-hidden": "true" }, "→"),
+      h("div", null, h("div", { class: "what" }, t.titulo), h("div", { class: "who" }, t.tituloEs)),
+      h("div", null, progressChips(id))
+    );
+  }
+  function viewHome() {
+    setCrumb([]);
+    add(app, h("section", { class: "hero" },
+      h("span", { class: "eyebrow" }, "Estudio de textos"),
+      h("h1", null, "Entiende un texto en 20 minutos"),
+      h("p", null, "Cada texto tiene una ruta guiada: activar, panorama, estructura, conceptos, test y explicarlo con tus palabras. Después, tarjetas de repaso espaciado para que no se olvide."),
+      h("div", { class: "row" }, h("a", { class: "btn ghost", href: "#metodo" }, "Cómo funciona el método"))
+    ));
+    SEMS.forEach(function (s) {
+      var head = h("div", { class: "sem-head" },
+        h("div", null, h("span", { class: "eyebrow" }, s.tema), h("h2", null, s.nombre)),
+        s.textos.length > 1 ? h("a", { href: "#s-" + s.id, class: "small" }, "Comparar y sintetizar →") : null
+      );
+      var list = s.textos.length
+        ? s.textos.filter(function (id) { return TXT[id]; }).map(textItem)
+        : h("div", { class: "empty" }, "Aún no hay textos. Cuando tengas el PDF, se añade aquí con su resumen, mapa, tarjetas y test.");
+      add(app, h("section", { class: "sem" }, head, list));
+    });
+  }
+
+  /* ---------- vista: texto ---------- */
+  function viewText(id, tab) {
+    var t = TXT[id];
+    var sem = SEMS.filter(function (s) { return s.id === t.seminario; })[0];
+    setCrumb([[sem ? sem.nombre : "", sem ? "s-" + sem.id : ""], [t.autor]]);
+    add(app, h("header", { class: "thead" },
+      h("span", { class: "eyebrow" }, t.autor),
+      h("h1", null, t.titulo),
+      h("div", { class: "es" }, t.tituloEs),
+      h("div", { class: "src" }, t.fuente)
+    ));
+    var tabs = h("nav", { class: "tabs", role: "tablist" });
+    TABS.forEach(function (tb) {
+      var label = tb[1];
+      if (tb[0] === "tarjetas") { var d = dueCount(id); if (d && (st(id).ruta || Object.keys(st(id).cards).length)) label += " · " + d; }
+      add(tabs, h("button", { class: "tab", role: "tab", "aria-selected": tb[0] === tab ? "true" : "false", onclick: function () { go("t-" + id + "-" + tb[0]); } }, label));
+    });
+    add(app, tabs);
+    var body = h("div", { class: "stack-l" });
+    add(app, body);
+    var fn = {
+      ruta: tabRuta, resumen: tabResumen, mapa: tabMapa, esquema: tabEsquema, conceptos: tabConceptos,
+      casos: tabCasos, debate: tabDebate, tarjetas: tabTarjetas, test: tabTest, ejercicios: tabEjercicios, citas: tabCitas
+    }[tab] || tabResumen;
+    fn(t, body);
+    var sel = tabs.querySelector('[aria-selected="true"]');
+    if (sel && sel.scrollIntoView) sel.scrollIntoView({ block: "nearest", inline: "center" });
+  }
+
+  function section(title, hint) {
+    return h("div", { class: "stack" }, h("h2", null, title), hint ? h("p", { class: "muted small" }, hint) : null);
+  }
+
+  /* --- Resumen --- */
+  function thesisBlock(t) {
+    return h("div", { class: "stack" }, h("span", { class: "eyebrow" }, "Tesis en una frase"), h("p", { class: "thesis", html: md(t.tesis) }));
+  }
+  function sectionsBlock(t, openFirst) {
+    return h("div", null, t.secciones.map(function (s, i) {
+      return h("details", { class: "sec", open: openFirst && i === 0 },
+        h("summary", null, s.t),
+        h("ul", null, s.p.map(function (p) { return h("li", { html: md(p) }); }))
+      );
+    }));
+  }
+  function tabResumen(t, el) {
+    add(el, thesisBlock(t));
+    add(el, h("div", { class: "stack" }, h("span", { class: "eyebrow" }, "En un párrafo"), h("div", { class: "prose" }, h("p", { html: md(t.parrafo) }))));
+    add(el, h("div", { class: "stack" }, h("span", { class: "eyebrow" }, "Sección por sección"), sectionsBlock(t, false)));
+  }
+
+  /* --- Mapa mental (SVG, árbol horizontal) --- */
+  function wrapText(s, max) {
+    var words = s.split(" "), lines = [], cur = "";
+    words.forEach(function (w) {
+      if ((cur + " " + w).trim().length > max && cur) { lines.push(cur); cur = w; }
+      else cur = (cur + " " + w).trim();
+    });
+    if (cur) lines.push(cur);
+    return lines;
+  }
+  function mindMap(root) {
+    var NS = "http://www.w3.org/2000/svg";
+    var COL = 214, NW = 184, LH = 16, PAD = 9, GAP = 10;
+    var collapsed = {};
+    var box = h("div", { class: "mapbox" });
+    function draw() {
+      clear(box);
+      var nodes = [], maxDepth = 0, cursor = 0;
+      function lay(n, depth, path, branch) {
+        var lines = wrapText(n.t, depth === 0 ? 20 : 25);
+        var node = { n: n, depth: depth, path: path, lines: lines, h: lines.length * LH + PAD * 2, branch: branch, kids: [] };
+        maxDepth = Math.max(maxDepth, depth);
+        nodes.push(node);
+        var kids = n.c && !collapsed[path] ? n.c : [];
+        if (kids.length) {
+          kids.forEach(function (c, i) { node.kids.push(lay(c, depth + 1, path + "." + i, depth === 0 ? i : branch)); });
+          var first = node.kids[0], last = node.kids[node.kids.length - 1];
+          node.y = (first.y + last.y) / 2;
+        } else {
+          node.y = cursor + node.h / 2;
+          cursor += node.h + GAP;
+        }
+        node.x = depth * COL;
+        return node;
+      }
+      lay(root, 0, "0", -1);
+      var W = maxDepth * COL + NW + 4, H = Math.max(cursor - GAP, 40) + 4;
+      var svg = document.createElementNS(NS, "svg");
+      svg.setAttribute("width", W); svg.setAttribute("height", H);
+      svg.setAttribute("viewBox", "-2 -2 " + W + " " + H);
+      svg.setAttribute("role", "img");
+      svg.setAttribute("aria-label", "Mapa mental: " + root.t);
+      function color(nd) { return nd.branch < 0 ? "var(--accent)" : "var(--b" + ((nd.branch % 5) + 1) + ")"; }
+      nodes.forEach(function (nd) {
+        nd.kids.forEach(function (k) {
+          var x1 = nd.x + NW, y1 = nd.y, x2 = k.x, y2 = k.y, mx = (x1 + x2) / 2;
+          var p = document.createElementNS(NS, "path");
+          p.setAttribute("d", "M" + x1 + "," + y1 + " C" + mx + "," + y1 + " " + mx + "," + y2 + " " + x2 + "," + y2);
+          p.setAttribute("fill", "none");
+          p.setAttribute("stroke", color(k));
+          p.setAttribute("stroke-opacity", "0.55");
+          p.setAttribute("stroke-width", nd.depth === 0 ? "2" : "1.4");
+          svg.appendChild(p);
+        });
+      });
+      nodes.forEach(function (nd) {
+        var g = document.createElementNS(NS, "g");
+        g.setAttribute("class", "node" + (nd.depth === 0 ? " root" : ""));
+        var r = document.createElementNS(NS, "rect");
+        r.setAttribute("x", nd.x); r.setAttribute("y", nd.y - nd.h / 2);
+        r.setAttribute("width", NW); r.setAttribute("height", nd.h); r.setAttribute("rx", 8);
+        if (nd.depth === 0) { r.setAttribute("fill", "var(--accent)"); }
+        else if (nd.depth === 1) { r.setAttribute("fill", "var(--surface)"); r.setAttribute("stroke", color(nd)); r.setAttribute("stroke-width", "1.6"); }
+        else { r.setAttribute("fill", "var(--bg)"); r.setAttribute("stroke", "var(--line)"); }
+        g.appendChild(r);
+        if (nd.depth === 1) {
+          var bar = document.createElementNS(NS, "rect");
+          bar.setAttribute("x", nd.x); bar.setAttribute("y", nd.y - nd.h / 2);
+          bar.setAttribute("width", 4); bar.setAttribute("height", nd.h); bar.setAttribute("rx", 2);
+          bar.setAttribute("fill", color(nd));
+          g.appendChild(bar);
+        }
+        nd.lines.forEach(function (ln, i) {
+          var tx = document.createElementNS(NS, "text");
+          tx.setAttribute("x", nd.x + 12);
+          tx.setAttribute("y", nd.y - nd.h / 2 + PAD + LH * i + 12);
+          if (nd.depth === 1) tx.setAttribute("font-weight", "600");
+          tx.textContent = ln;
+          g.appendChild(tx);
+        });
+        if (nd.n.c && nd.depth > 0) {
+          var sign = document.createElementNS(NS, "text");
+          sign.setAttribute("x", nd.x + NW - 16); sign.setAttribute("y", nd.y + 4);
+          sign.setAttribute("fill", "var(--muted)");
+          sign.textContent = collapsed[nd.path] ? "+" : "–";
+          g.appendChild(sign);
+        }
+        if (nd.n.c && nd.depth > 0) {
+          g.addEventListener("click", function () { collapsed[nd.path] = !collapsed[nd.path]; draw(); });
+        }
+        svg.appendChild(g);
+      });
+      box.appendChild(svg);
+    }
+    draw();
+    return box;
+  }
+  function outline(root) {
+    function ul(n) {
+      return h("ul", { class: "outline" }, (n.c || []).map(function (c) {
+        return h("li", null, c.t, c.c ? ul(c) : null);
+      }));
+    }
+    return h("div", { class: "card" }, h("h3", null, root.t), ul(root));
+  }
+  function mapBlock(t) {
+    var wrap = h("div", { class: "stack" });
+    var mode = "mapa";
+    var holder = h("div");
+    var b1 = h("button", { class: "btn", onclick: function () { mode = "mapa"; paint(); } }, "Mapa");
+    var b2 = h("button", { class: "btn", onclick: function () { mode = "lista"; paint(); } }, "Lista");
+    function paint() {
+      clear(holder);
+      b1.className = "btn" + (mode === "mapa" ? " primary" : "");
+      b2.className = "btn" + (mode === "lista" ? " primary" : "");
+      add(holder, mode === "mapa" ? mindMap(t.mapa) : outline(t.mapa));
+    }
+    paint();
+    add(wrap, h("div", { class: "row" }, b1, b2, h("span", { class: "muted small" }, "Toca una rama para plegarla. Desliza en horizontal en el móvil.")), holder);
+    return wrap;
+  }
+  function tabMapa(t, el) {
+    add(el, section("Mapa mental", "Mira el mapa 1 minuto. Luego tápalo e intenta reproducir las ramas principales de memoria."));
+    add(el, mapBlock(t));
+  }
+
+  /* --- Esquema del argumento --- */
+  function argBlock(t) {
+    return h("div", { class: "stack" },
+      h("div", { class: "legend" }, h("span", { class: "lp" }, "Premisa"), h("span", { class: "lc" }, "Conclusión"), h("span", { class: "lo" }, "Objeción"), h("span", { class: "lr" }, "Respuesta")),
+      h("div", { class: "arg" }, t.argumento.map(function (a) {
+        return h("div", { class: "arg-row " + a.k }, h("span", { class: "arg-id" }, a.id), h("div", { html: md(a.t) }));
+      }))
+    );
+  }
+  function tabEsquema(t, el) {
+    add(el, section("Esquema del argumento", "La estructura lógica del texto: de qué parte, a dónde llega y qué objeciones responde."));
+    add(el, argBlock(t));
+  }
+
+  /* --- Conceptos --- */
+  function conceptsBlock(t, hideDefault) {
+    var hide = hideDefault;
+    var list = h("div");
+    var sw = h("input", { type: "checkbox", id: "hide-" + t.id });
+    sw.checked = hide;
+    sw.addEventListener("change", function () { hide = sw.checked; paint(); });
+    function paint() {
+      clear(list);
+      t.conceptos.forEach(function (c) {
+        var row = h("div", { class: "concept" + (hide ? " hidden-def" : "") },
+          h("div", { class: "term" }, c.t),
+          c.en ? h("div", { class: "en" }, c.en) : null,
+          h("div", { class: "def", html: md(c.d) }),
+          c.e ? h("div", { class: "ex", html: "Ej.: " + md(c.e) }) : null
+        );
+        row.addEventListener("click", function () { row.classList.remove("hidden-def"); });
+        add(list, row);
+      });
+    }
+    paint();
+    return h("div", { class: "stack" },
+      h("label", { class: "switch", for: "hide-" + t.id }, sw, "Modo autoevaluación: oculta definiciones (toca para ver)"),
+      list);
+  }
+  function tabConceptos(t, el) {
+    add(el, section("Conceptos clave", "Activa el modo autoevaluación: intenta definir cada término antes de tocarlo."));
+    add(el, conceptsBlock(t, false));
+  }
+
+  /* --- Casos --- */
+  function casesBlock(t) {
+    return h("div", { class: "cases" }, t.casos.map(function (c) {
+      var r = h("div", { class: "reveal", html: md(c.prueba), hidden: true });
+      var b = h("button", { class: "btn", onclick: function () { r.hidden = false; b.hidden = true; } }, "¿Qué prueba?");
+      return h("div", { class: "card case" },
+        h("span", { class: "by" }, c.de),
+        h("h3", null, c.n),
+        h("p", { html: md(c.d) }),
+        h("div", null, b), r
+      );
+    }));
+  }
+  function tabCasos(t, el) {
+    add(el, section("Casos y ejemplos", "Antes de pulsar, piensa: ¿qué intuición provoca el caso y contra quién se usa?"));
+    add(el, casesBlock(t));
+  }
+
+  /* --- Debate --- */
+  function tabDebate(t, el) {
+    add(el, section("Con quién discute", "Posición de cada autor y la respuesta del texto."));
+    add(el, h("div", { class: "tablebox" }, h("table", null,
+      h("thead", null, h("tr", null, h("th", null, "Autor"), h("th", null, "Posición"), h("th", null, "Respuesta del texto"))),
+      h("tbody", null, t.autores.map(function (a) {
+        return h("tr", null, h("td", null, a.n), h("td", { html: md(a.pos) }), h("td", { html: md(a.resp) }));
+      }))
+    )));
+    add(el, section("Errores frecuentes"));
+    add(el, h("ul", { class: "evid" }, t.errores.map(function (e) { return h("li", { html: md(e) }); })));
+  }
+
+  /* --- Citas --- */
+  function tabCitas(t, el) {
+    add(el, section("Citas clave", "En inglés original, para citarlas en el seminario."));
+    add(el, h("div", null, t.citas.map(function (c) {
+      return h("blockquote", null, h("span", { class: "c", html: "«" + md(c.c) + "»" }), h("span", { class: "meta", html: c.p + " · " + md(c.n) }));
+    })));
+  }
+
+  /* --- Tarjetas (Leitner) --- */
+  function tabTarjetas(t, el) {
+    add(el, section("Tarjetas", "Repetición espaciada: lo que sabes vuelve más tarde; lo que fallas, hoy mismo."));
+    var holder = h("div", { class: "stack" });
+    add(el, holder);
+    var all = false;
+    function start() {
+      var now = today();
+      var queue = t.tarjetas.map(function (_, i) { return i; }).filter(function (i) { return all || cardState(t.id, i).due <= now; });
+      queue = shuffle(queue);
+      var total = queue.length, done = 0;
+      function boxesInfo() {
+        var counts = [0, 0, 0, 0, 0, 0];
+        t.tarjetas.forEach(function (_, i) { counts[cardState(t.id, i).box]++; });
+        return h("div", { class: "boxes" }, ["Nuevas", "Caja 1", "Caja 2", "Caja 3", "Caja 4", "Dominadas"].map(function (n, i) {
+          return h("span", null, n + " ", h("b", null, counts[i]), i < 5 ? " ·" : "");
+        }));
+      }
+      function next() {
+        clear(holder);
+        if (!queue.length) {
+          var nextDue = t.tarjetas.map(function (_, i) { return cardState(t.id, i).due; }).sort()[0];
+          add(holder, h("div", { class: "card stack" },
+            h("h3", null, total ? "Sesión terminada" : "No hay tarjetas pendientes hoy"),
+            h("p", { class: "muted" }, "Próximo repaso: " + fmtDate(nextDue) + "."),
+            boxesInfo(),
+            h("div", { class: "row" },
+              h("button", { class: "btn", onclick: function () { all = true; start(); } }, "Repasar todas igualmente"))
+          ));
+          return;
+        }
+        var i = queue[0];
+        var c = t.tarjetas[i];
+        var ans = h("div", { class: "a", html: md(c.a), hidden: true });
+        var rate = h("div", { class: "row", hidden: true });
+        var show = h("button", { class: "btn primary", onclick: function () { ans.hidden = false; rate.hidden = false; show.hidden = true; } }, "Mostrar respuesta");
+        function grade(g) {
+          var s = cardState(t.id, i);
+          if (g === 0) { s = { box: 1, due: today() }; queue.push(queue.shift()); }
+          else if (g === 1) { s = { box: Math.max(1, s.box), due: today(1) }; queue.shift(); done++; }
+          else { var b = Math.min(5, s.box + 1); s = { box: b, due: today(INTERVAL[b]) }; queue.shift(); done++; }
+          st(t.id).cards[i] = s; saveStore();
+          next();
+        }
+        add(rate,
+          h("button", { class: "btn", onclick: function () { grade(0); } }, "No lo sabía"),
+          h("button", { class: "btn", onclick: function () { grade(1); } }, "Dudé"),
+          h("button", { class: "btn primary", onclick: function () { grade(2); } }, "Lo sabía"));
+        add(holder,
+          h("div", { class: "meter", "aria-hidden": "true" }, h("i", { style: "width:" + (total ? Math.round((done / total) * 100) : 0) + "%" })),
+          h("div", { class: "card fc" },
+            h("div", { class: "stack" }, h("span", { class: "eyebrow" }, (done + 1) + " de " + total), h("div", { class: "q", html: md(c.q) }), ans),
+            h("div", { class: "row" }, show, rate)
+          ),
+          boxesInfo());
+      }
+      next();
+    }
+    start();
+  }
+
+  /* --- Test --- */
+  function normalizeQ(q, src) {
+    if (typeof q.v === "boolean") return { q: q.q, o: ["Verdadero", "Falso"], r: q.v ? 0 : 1, x: q.x, src: src, fixed: true };
+    return { q: q.q, o: q.o, r: q.r, x: q.x, src: src };
+  }
+  function quiz(questions, onEnd, opts) {
+    opts = opts || {};
+    var box = h("div", { class: "quiz stack" });
+    function run(qs) {
+      var idx = 0, score = 0, fails = [];
+      function show() {
+        clear(box);
+        if (idx >= qs.length) {
+          var pct = Math.round((score / qs.length) * 100);
+          if (onEnd) onEnd(pct, fails);
+          var msg = pct >= 90 ? "Dominado. Pasa a los ejercicios." : pct >= 70 ? "Bien. Repasa las falladas." : "Vuelve al esquema y al mapa, y repite.";
+          add(box, h("div", { class: "card stack" },
+            h("span", { class: "eyebrow" }, "Resultado"),
+            h("div", { class: "score" }, pct + "%"),
+            h("p", null, score + " de " + qs.length + " correctas. " + msg),
+            h("div", { class: "row" },
+              fails.length ? h("button", { class: "btn primary", onclick: function () { run(shuffle(fails)); } }, "Repetir falladas (" + fails.length + ")") : null,
+              h("button", { class: "btn", onclick: function () { run(shuffle(questions)); } }, "Repetir todo"))
+          ));
+          return;
+        }
+        var q = qs[idx];
+        var order = q.fixed ? q.o.map(function (_, i) { return i; }) : shuffle(q.o.map(function (_, i) { return i; }));
+        var fb = h("div");
+        var nextBtn = h("button", { class: "btn primary", hidden: true, onclick: function () { idx++; show(); } }, idx === qs.length - 1 ? "Ver resultado" : "Siguiente");
+        var btns = order.map(function (oi) {
+          var b = h("button", { class: "opt", html: md(q.o[oi]) });
+          b.addEventListener("click", function () {
+            var ok = oi === q.r;
+            if (ok) score++; else fails.push(q);
+            btns.forEach(function (bb, k) {
+              bb.disabled = true;
+              if (order[k] === q.r) bb.classList.add("right");
+            });
+            if (!ok) b.classList.add("wrong");
+            add(fb, h("div", { class: "feedback " + (ok ? "ok" : "ko"), html: "<strong>" + (ok ? "Correcto." : "No.") + "</strong> " + md(q.x || "") }));
+            nextBtn.hidden = false;
+            nextBtn.focus();
+          });
+          return b;
+        });
+        add(box,
+          h("div", { class: "meter", "aria-hidden": "true" }, h("i", { style: "width:" + Math.round((idx / qs.length) * 100) + "%" })),
+          h("div", { class: "row", style: "justify-content:space-between" },
+            h("span", { class: "eyebrow" }, "Pregunta " + (idx + 1) + " de " + qs.length),
+            q.src && opts.showSrc ? h("span", { class: "src-tag" }, q.src) : null),
+          h("div", { class: "qtext", html: md(q.q) }),
+          h("div", { class: "opts" }, btns), fb, h("div", null, nextBtn));
+      }
+      show();
+    }
+    run(shuffle(questions));
+    return box;
+  }
+  function saveTest(id, pct) {
+    var s = st(id);
+    s.test = { best: Math.max(pct, (s.test && s.test.best) || 0), last: pct, date: today() };
+    saveStore();
+  }
+  function tabTest(t, el) {
+    var s = st(t.id);
+    add(el, section("Test", "Recuperar de memoria es lo que fija el aprendizaje. Responde sin mirar." + (s.test ? " Mejor resultado: " + s.test.best + "%." : "")));
+    add(el, quiz(t.test.map(function (q) { return normalizeQ(q, t.autor); }), function (pct) { saveTest(t.id, pct); }));
+  }
+
+  /* --- Ejercicios --- */
+  function exercise(ex, noteKey, owner) {
+    var s = st(owner);
+    var ta = h("textarea", { id: "ej-" + noteKey, placeholder: "Escribe tu respuesta antes de ver el modelo…" });
+    ta.value = s.notes[noteKey] || "";
+    ta.addEventListener("input", function () { s.notes[noteKey] = ta.value; saveStore(); });
+    var pista = h("p", { class: "muted small", html: "Pista: " + md(ex.pista || ""), hidden: true });
+    var checks = h("div", { class: "checks" }, (ex.criterios || []).map(function (c, i) {
+      var id = "cr-" + noteKey + "-" + i;
+      return h("label", { for: id }, h("input", { type: "checkbox", id: id }), h("span", { html: md(c) }));
+    }));
+    var model = h("div", { class: "stack", hidden: true },
+      h("div", { class: "reveal", html: "<strong>Respuesta modelo.</strong> " + md(ex.modelo) }),
+      ex.criterios ? h("div", { class: "stack" }, h("span", { class: "eyebrow" }, "¿Tu respuesta incluye…?"), checks) : null);
+    var bModel = h("button", { class: "btn primary", onclick: function () { model.hidden = false; bModel.hidden = true; } }, "Comparar con el modelo");
+    return h("div", { class: "card stack" },
+      ex.k ? h("span", { class: "ex-k" }, ex.k) : null,
+      h("h3", { html: md(ex.q) }),
+      ex.pista ? h("div", null, h("button", { class: "btn ghost", onclick: function (e) { pista.hidden = false; e.target.hidden = true; } }, "Ver pista"), pista) : null,
+      ta,
+      h("div", { class: "row" }, bModel),
+      model);
+  }
+  function tabEjercicios(t, el) {
+    add(el, section("Ejercicios", "Escribe primero, compara después. Tus respuestas se guardan en este navegador."));
+    t.ejercicios.forEach(function (ex, i) { add(el, exercise(ex, t.id + "-" + i, t.id)); });
+  }
+
+  /* --- Preguntas previas --- */
+  function pretestBlock(t) {
+    return h("div", { class: "stack" }, t.preguntasPrevias.map(function (p, i) {
+      var noteKey = t.id + "-pre-" + i;
+      var inp = h("input", { type: "text", id: "pre-" + noteKey, placeholder: "Tu intuición en una línea" });
+      inp.value = st(t.id).notes[noteKey] || "";
+      inp.addEventListener("input", function () { st(t.id).notes[noteKey] = inp.value; saveStore(); });
+      var a = h("div", { class: "reveal", html: md(p.a), hidden: true });
+      var b = h("button", { class: "btn", onclick: function () { a.hidden = false; b.hidden = true; } }, "Ver qué dice el texto");
+      return h("div", { class: "card stack" }, h("h3", { html: md(p.q) }), inp, h("div", null, b), a);
+    }));
+  }
+
+  /* --- Ruta 20 minutos --- */
+  var STEPS = [
+    { k: "activa", n: "Activa", min: 2, why: "Intenta responder antes de saber. Aunque falles, el intento prepara la memoria para la respuesta (efecto pre-test)." },
+    { k: "panorama", n: "Panorama", min: 3, why: "Primero la idea general y luego los detalles: la tesis es el gancho del que cuelga todo lo demás." },
+    { k: "estructura", n: "Estructura", min: 5, why: "Mapa + esquema lógico: verlo de dos formas (visual y verbal) se recuerda mejor que leerlo una vez." },
+    { k: "claves", n: "Conceptos y casos", min: 3, why: "Define cada término antes de destaparlo. En cada caso, pregúntate qué prueba." },
+    { k: "recupera", n: "Recupera", min: 5, why: "Test sin mirar. Recuperar de memoria es la técnica de estudio con más evidencia." },
+    { k: "explica", n: "Explica", min: 2, why: "Explícalo como a alguien que no sabe nada. Donde te atasques, ahí está el hueco." }
+  ];
+  function tabRuta(t, el) {
+    var s = st(t.id);
+    var r = s.rutaState || { step: 0, left: 20 * 60 };
+    var running = false;
+    var clock = h("div", { class: "clock", "aria-live": "off" });
+    var playBtn = h("button", { class: "btn primary" });
+    var stepsBar = h("div", { class: "steps" });
+    var content = h("div", { class: "stack-l" });
+
+    function persist() { s.rutaState = r; saveStore(); }
+    function fmt(sec) {
+      var neg = sec < 0; sec = Math.abs(sec);
+      return (neg ? "+" : "") + String(Math.floor(sec / 60)).padStart(2, "0") + ":" + String(sec % 60).padStart(2, "0");
+    }
+    function paintClock() {
+      clock.textContent = fmt(r.left);
+      clock.className = "clock" + (r.left < 0 ? " over" : "");
+      playBtn.textContent = running ? "Pausar" : (r.left === 20 * 60 ? "Empezar" : "Continuar");
+    }
+    playBtn.addEventListener("click", function () { running = !running; paintClock(); });
+    var iv = setInterval(function () {
+      if (!running) return;
+      r.left--; paintClock();
+      if (r.left % 10 === 0) persist();
+    }, 1000);
+    timers.push(iv);
+
+    function paintSteps() {
+      clear(stepsBar);
+      STEPS.forEach(function (sp, i) {
+        add(stepsBar, h("button", {
+          class: "step" + (i < r.step ? " done" : "") + (i === r.step ? " cur" : ""),
+          onclick: function () { r.step = i; persist(); paintStep(); },
+          "aria-label": "Paso " + (i + 1) + ": " + sp.n
+        }, h("i"), h("span", null, sp.n)));
+      });
+    }
+    function finish() {
+      running = false;
+      s.ruta = today();
+      t.tarjetas.forEach(function (_, i) { if (!s.cards[i]) s.cards[i] = { box: 0, due: today(1) }; });
+      r = { step: 0, left: 20 * 60 };
+      s.rutaState = r;
+      saveStore();
+      clear(content);
+      paintClock();
+      add(content, h("div", { class: "card stack" },
+        h("span", { class: "eyebrow" }, "Ruta completada"),
+        h("h2", null, "Ya tienes el texto. Ahora, que no se olvide."),
+        h("p", null, "Plan de repaso espaciado:"),
+        h("ul", { class: "evid" },
+          h("li", null, h("strong", null, "Mañana (5 min):"), " tarjetas."),
+          h("li", null, h("strong", null, "En 3 días (8 min):"), " tarjetas + test completo."),
+          h("li", null, h("strong", null, "En una semana (15 min):"), " ejercicios de ensayo y la comparación del seminario."),
+          h("li", null, h("strong", null, "Antes del seminario:"), " test mixto del seminario y las citas clave.")),
+        h("div", { class: "row" },
+          h("button", { class: "btn primary", onclick: function () { go("t-" + t.id + "-ejercicios"); } }, "Ir a los ejercicios"),
+          h("button", { class: "btn", onclick: function () { go(""); } }, "Volver al inicio"))
+      ));
+      toast("Ruta guardada. Repaso: mañana.");
+    }
+    function paintStep() {
+      paintSteps();
+      clear(content);
+      var sp = STEPS[r.step];
+      add(content, h("div", { class: "stack" },
+        h("div", { class: "step-title" }, h("span", { class: "eyebrow" }, "Paso " + (r.step + 1) + " · " + sp.min + " min"), h("h2", null, sp.n)),
+        h("p", { class: "muted" }, sp.why)));
+      var body = h("div", { class: "stack-l" });
+      if (sp.k === "activa") add(body, pretestBlock(t));
+      if (sp.k === "panorama") {
+        add(body, thesisBlock(t));
+        add(body, h("div", { class: "prose" }, h("p", { html: md(t.parrafo) })));
+      }
+      if (sp.k === "estructura") { add(body, mapBlock(t)); add(body, h("h3", null, "Esquema del argumento")); add(body, argBlock(t)); }
+      if (sp.k === "claves") { add(body, conceptsBlock(t, true)); add(body, h("h3", null, "Casos")); add(body, casesBlock(t)); }
+      if (sp.k === "recupera") {
+        add(body, quiz(shuffle(t.test).slice(0, 8).map(function (q) { return normalizeQ(q, t.autor); }), function (pct) { saveTest(t.id, pct); }));
+      }
+      if (sp.k === "explica") add(body, exercise(t.ejercicios[0], t.id + "-0", t.id));
+      add(content, body);
+      add(content, h("div", { class: "nav" },
+        r.step > 0 ? h("button", { class: "btn", onclick: function () { r.step--; persist(); paintStep(); window.scrollTo(0, 0); } }, "← Anterior") : h("span"),
+        r.step < STEPS.length - 1
+          ? h("button", { class: "btn primary", onclick: function () { r.step++; persist(); paintStep(); window.scrollTo(0, 0); } }, "Siguiente: " + STEPS[r.step + 1].n + " →")
+          : h("button", { class: "btn primary", onclick: finish }, "Terminar ruta ✓")));
+    }
+
+    add(el, h("div", { class: "stack" },
+      h("div", { class: "route-head" },
+        h("div", { class: "stack", style: "gap:2px" }, h("span", { class: "eyebrow" }, "Ruta guiada"), clock),
+        h("div", { class: "row" }, playBtn,
+          h("button", { class: "btn ghost", onclick: function () { r = { step: 0, left: 20 * 60 }; running = false; persist(); paintClock(); paintStep(); } }, "Reiniciar"))),
+      stepsBar));
+    add(el, content);
+    paintClock();
+    paintStep();
+  }
+
+  /* ---------- vista: seminario ---------- */
+  function viewSeminar(id) {
+    var s = SEMS.filter(function (x) { return x.id === id; })[0];
+    if (!s) return viewHome();
+    setCrumb([[s.nombre]]);
+    add(app, h("header", { class: "thead" },
+      h("span", { class: "eyebrow" }, s.tema),
+      h("h1", null, s.nombre),
+      s.orden ? h("p", { class: "es" }, s.orden) : null));
+    var el = h("div", { class: "stack-l" });
+    add(app, el);
+    add(el, h("div", { class: "stack" }, s.textos.filter(function (x) { return TXT[x]; }).map(textItem)));
+    if (s.comparacion) {
+      add(el, section("Comparación", "Las dos lecturas, punto por punto."));
+      add(el, h("div", { class: "tablebox" }, h("table", null,
+        h("thead", null, h("tr", null, h("th", null, ""), s.comparacion.columnas.map(function (c) { return h("th", null, c); }))),
+        h("tbody", null, s.comparacion.filas.map(function (f) {
+          return h("tr", null, f.map(function (c) { return h("td", { html: md(c) }); }));
+        }))
+      )));
+    }
+    if (s.conexiones) {
+      add(el, section("Conexiones", "Dónde coinciden y dónde chocan."));
+      add(el, h("div", null, s.conexiones.map(function (c) {
+        return h("div", { class: "concept" }, h("div", { class: "term", html: md(c.t) }), h("div", { html: md(c.d) }));
+      })));
+    }
+    var tq = [];
+    s.textos.forEach(function (x) { if (TXT[x]) TXT[x].test.forEach(function (q) { tq.push(normalizeQ(q, TXT[x].autor)); }); });
+    if (s.textos.length > 1 && tq.length) {
+      add(el, section("Test mixto", "Preguntas de ambos textos mezcladas. Mezclar temas obliga a distinguir a quién pertenece cada idea."));
+      add(el, quiz(shuffle(tq).slice(0, 12), null, { showSrc: true }));
+    }
+    if (s.sintesis) {
+      add(el, section("Preguntas de síntesis", "Para preparar la discusión del seminario."));
+      s.sintesis.forEach(function (ex, i) { add(el, exercise(ex, "sem-" + s.id + "-" + i, "sem-" + s.id)); });
+    }
+  }
+
+  /* ---------- vista: método ---------- */
+  function viewMethod() {
+    setCrumb([["Método"]]);
+    add(app, h("header", { class: "thead" },
+      h("span", { class: "eyebrow" }, "Cómo funciona"),
+      h("h1", null, "El método de los 20 minutos"),
+      h("p", { class: "es" }, "La app no te hace releer: te hace recuperar, estructurar y explicar, que es lo que la investigación sobre aprendizaje muestra que funciona.")));
+    var el = h("div", { class: "stack-l" });
+    add(app, el);
+    add(el, h("div", { class: "method" }, STEPS.map(function (sp, i) {
+      var acc = STEPS.slice(0, i).reduce(function (a, b) { return a + b.min; }, 0);
+      return h("div", { class: "m" },
+        h("div", { class: "t" }, acc + "–" + (acc + sp.min) + "′"),
+        h("div", { class: "stack", style: "gap:4px" }, h("h3", null, sp.n), h("p", { class: "muted" }, sp.why)));
+    })));
+    add(el, section("En qué se basa"));
+    var ev = [
+      ["Práctica de recuperación (test)", "alta", "Hacerse preguntas mejora la retención a largo plazo mucho más que releer (Roediger y Karpicke, 2006). Dunlosky et al. (2013) la sitúan entre las dos técnicas de mayor utilidad."],
+      ["Repaso espaciado", "alta", "Repartir los repasos en días separados vence a la curva del olvido (Ebbinghaus; Cepeda et al., 2006). Por eso las tarjetas vuelven a los 1, 3, 7, 14 y 30 días."],
+      ["Pre-test", "media", "Intentar responder antes de estudiar, incluso fallando, mejora lo que se aprende después (Richland, Kornell y Kao, 2009)."],
+      ["Organizador previo", "media", "Dar primero la idea general facilita integrar los detalles (Ausubel, 1960). De ahí la tesis en una frase."],
+      ["Mapas y doble codificación", "media", "Combinar lo visual y lo verbal mejora el recuerdo (Paivio); los mapas conceptuales superan a la lectura de listas o textos (Nesbit y Adesope, 2006)."],
+      ["Autoexplicación y Feynman", "media", "Explicar con tus palabras revela lo que no entiendes (Chi et al., 1994)."],
+      ["Interrogación elaborativa", "media", "Preguntarse «¿por qué?» y «¿qué prueba esto?» ante cada caso conecta la idea con lo que ya sabes."],
+      ["Práctica intercalada", "media", "Mezclar preguntas de varios textos obliga a discriminar entre ideas (Rohrer y Taylor, 2007). Es el test mixto del seminario."],
+      ["Releer y subrayar", "baja", "Dan sensación de dominio pero rinden poco (Dunlosky et al., 2013). Aquí el subrayado solo marca lo que debes poder recuperar."]
+    ];
+    add(el, h("ul", { class: "evid" }, ev.map(function (e) {
+      return h("li", null, h("strong", null, e[0]), h("span", { class: "lvl " + e[1] }, "utilidad " + e[1]), h("br"), h("span", { class: "muted" }, e[2]));
+    })));
+    add(el, section("Plan de repaso"));
+    add(el, h("div", { class: "tablebox" }, h("table", null,
+      h("thead", null, h("tr", null, h("th", null, "Cuándo"), h("th", null, "Qué"), h("th", null, "Tiempo"))),
+      h("tbody", null, [
+        ["Día 0", "Ruta 20′", "20 min"],
+        ["Día 1", "Tarjetas pendientes", "5 min"],
+        ["Día 3", "Tarjetas + test completo", "8 min"],
+        ["Día 7", "Ejercicios de ensayo + comparación del seminario", "15 min"],
+        ["Antes del seminario", "Test mixto + citas clave", "10 min"]
+      ].map(function (r) { return h("tr", null, r.map(function (c) { return h("td", null, c); })); }))
+    )));
+    add(el, h("p", { class: "muted small" }, "Tu progreso (tarjetas, test, respuestas) se guarda solo en este navegador."));
+  }
+
+  window.addEventListener("hashchange", render);
+  render();
+})();
+
+</script>
+</body>
+</html>
