@@ -29,6 +29,8 @@
   --b3: #a05a12;
   --b4: #8a2f74;
   --b5: #2d6f86;
+  --gold: #c98a00;
+  --gold-soft: rgba(201, 138, 0, 0.12);
 
   --f-display: "Instrument Serif", "Iowan Old Style", Georgia, serif;
   --f-body: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
@@ -43,7 +45,7 @@
     --accent: #8fa2ff; --accent-ink: #0f1430; --accent-soft: rgba(143, 162, 255, 0.12);
     --mark: rgba(214, 180, 40, 0.38); --ok: #5cc596; --ok-soft: rgba(92, 197, 150, 0.12);
     --bad: #f07c72; --bad-soft: rgba(240, 124, 114, 0.12);
-    --b1: #8fa2ff; --b2: #5cc596; --b3: #e3a35b; --b4: #db8cc9; --b5: #6cc3de;
+    --b1: #8fa2ff; --b2: #5cc596; --b3: #e3a35b; --b4: #db8cc9; --b5: #6cc3de; --gold: #f2c14e; --gold-soft: rgba(242, 193, 78, 0.12);
     color-scheme: dark;
   }
 }
@@ -52,7 +54,7 @@
   --accent: #8fa2ff; --accent-ink: #0f1430; --accent-soft: rgba(143, 162, 255, 0.12);
   --mark: rgba(214, 180, 40, 0.38); --ok: #5cc596; --ok-soft: rgba(92, 197, 150, 0.12);
   --bad: #f07c72; --bad-soft: rgba(240, 124, 114, 0.12);
-  --b1: #8fa2ff; --b2: #5cc596; --b3: #e3a35b; --b4: #db8cc9; --b5: #6cc3de;
+  --b1: #8fa2ff; --b2: #5cc596; --b3: #e3a35b; --b4: #db8cc9; --b5: #6cc3de; --gold: #f2c14e; --gold-soft: rgba(242, 193, 78, 0.12);
   color-scheme: dark;
 }
 
@@ -325,7 +327,77 @@ td:first-child { font-weight: 600; white-space: nowrap; }
   background: var(--ink); color: var(--bg); padding: 10px 16px; border-radius: 999px; font-size: 14px; z-index: 20;
 }
 
+/* Juego */
+.game { position: relative; display: flex; flex-direction: column; gap: 16px; }
+.g-hero { display: flex; flex-direction: column; gap: 16px; padding: 24px 22px; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; }
+.g-hero h2 { font-size: 34px; }
+.g-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.g-stats > div { display: flex; flex-direction: column; gap: 2px; padding: 10px; border-radius: 10px; background: var(--bg); min-width: 0; }
+.g-stats b { font-family: var(--f-mono); font-size: 20px; font-variant-numeric: tabular-nums; text-transform: capitalize; }
+.g-stats span { font-size: 11px; color: var(--muted); }
+.g-rules { margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 6px; }
+.g-rules li { font-size: 13px; padding: 4px 10px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); }
+.g-play { font-size: 16px; padding: 12px 28px; font-weight: 600; }
+.g-hud {
+  position: sticky; top: calc(52px + env(safe-area-inset-top, 0px)); z-index: 4;
+  display: grid; grid-template-columns: auto auto 1fr auto; gap: 12px; align-items: center;
+  padding: 10px 14px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px;
+}
+.g-lives { display: flex; gap: 4px; }
+.g-lives i { width: 14px; height: 14px; border-radius: 50%; background: var(--bad); transition: transform .25s, opacity .25s; }
+.g-lives i.off { background: var(--line); transform: scale(.7); }
+.g-prog { font-family: var(--f-mono); font-size: 12px; color: var(--muted); }
+.g-combo { font-family: var(--f-mono); font-weight: 600; font-size: 15px; justify-self: center; white-space: nowrap; }
+.g-combo small { font-weight: 400; color: var(--muted); font-size: 11px; }
+.g-combo.m2 { color: var(--b2); } .g-combo.m3 { color: var(--b3); } .g-combo.m4 { color: var(--b4); }
+.g-score { font-family: var(--f-mono); font-size: 22px; font-weight: 600; font-variant-numeric: tabular-nums; min-width: 4ch; text-align: right; }
+.pop { animation: pop .35s ease-out; }
+@keyframes pop { 40% { transform: scale(1.3); } 100% { transform: scale(1); } }
+.g-card { position: relative; overflow: visible; }
+.g-card.gold { border-color: var(--gold); box-shadow: 0 0 0 3px var(--gold-soft); }
+.g-gold { color: var(--gold); }
+.g-card.g-ok { animation: okflash .6s ease-out; }
+@keyframes okflash { 0% { box-shadow: 0 0 0 0 var(--ok); } 100% { box-shadow: 0 0 0 14px transparent; } }
+.g-card.g-ko, .shake { animation: shake .4s; }
+@keyframes shake { 20%, 60% { transform: translateX(-6px); } 40%, 80% { transform: translateX(6px); } }
+.g-timer { height: 6px; border-radius: 6px; background: var(--line); overflow: hidden; }
+.g-timer i { display: block; height: 100%; width: 100%; background: var(--accent); }
+.g-timer.low i { background: var(--bad); }
+.opts.vf { flex-direction: row; } .opts.vf .opt { flex: 1; text-align: center; font-weight: 600; }
+.small-opt { font-size: 14px; padding: 10px 12px; }
+.g-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.g-chip { appearance: none; border: 1.5px solid var(--line); background: var(--bg); border-radius: 999px; padding: 8px 14px; cursor: pointer; font-weight: 600; font-size: 14px; }
+.g-chip.sel { border-color: var(--accent); background: var(--accent); color: var(--accent-ink); }
+.g-chip.done { border-color: var(--ok); color: var(--ok); background: var(--ok-soft); cursor: default; }
+.g-num { display: inline-grid; place-items: center; width: 22px; height: 22px; margin-right: 8px; border-radius: 50%; background: var(--ink); color: var(--bg); font-family: var(--f-mono); font-size: 12px; }
+.g-float { position: absolute; right: 18px; top: -8px; font-family: var(--f-mono); font-weight: 600; font-size: 24px; color: var(--ok); pointer-events: none; animation: floatup .9s ease-out forwards; }
+.g-float.gold { color: var(--gold); font-size: 30px; }
+@keyframes floatup { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-46px); } }
+.g-banner {
+  position: fixed; left: 50%; top: 38%; transform: translate(-50%, -50%); z-index: 30; pointer-events: none;
+  font-family: var(--f-display); font-size: clamp(30px, 8vw, 52px); white-space: nowrap;
+  padding: 10px 26px; border-radius: 16px; background: var(--ink); color: var(--bg);
+  animation: bannerin 1.3s ease-out forwards;
+}
+.g-banner.gold { background: var(--gold); color: #1b1400; }
+@keyframes bannerin { 0% { opacity: 0; transform: translate(-50%, -50%) scale(.6); } 20% { opacity: 1; transform: translate(-50%, -50%) scale(1.06); } 75% { opacity: 1; transform: translate(-50%, -50%) scale(1); } 100% { opacity: 0; transform: translate(-50%, -60%) scale(1); } }
+.confetti { position: fixed; inset: 0; pointer-events: none; z-index: 29; }
+.g-end { gap: 14px; }
+.g-final { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; }
+.g-record { font-family: var(--f-mono); font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 999px; background: var(--gold); color: #1b1400; animation: pop .5s .4s both; }
+.g-medal { align-self: flex-start; font-weight: 600; padding: 6px 14px; border-radius: 999px; }
+.g-medal.oro, .chip.medal.oro { background: var(--gold-soft); color: var(--gold); }
+.g-medal.plata, .chip.medal.plata { background: var(--accent-soft); color: var(--muted); }
+.g-medal.bronce, .chip.medal.bronce { background: rgba(160, 90, 18, .12); color: var(--b3); }
+.chip.medal.none { background: var(--accent-soft); }
+.g-xp i { transition: width 1.2s cubic-bezier(.2,.8,.2,1); }
+.g-mini { display: flex; align-items: center; gap: 10px; font-family: var(--f-mono); font-size: 12px; color: var(--muted); max-width: 420px; }
+.g-mini .meter { flex: 1; }
+
 @media (max-width: 520px) {
+  .g-stats { grid-template-columns: repeat(2, 1fr); }
+  .g-hud { gap: 8px; padding: 8px 10px; }
+  .g-score { font-size: 18px; }
   .arg-row.objecion { margin-left: 10px; }
   .arg-row.respuesta { margin-left: 20px; }
   .thesis { font-size: 20px; }
@@ -1255,7 +1327,7 @@ window.TEXTOS.fanon = {
 
   /* ---------- enrutado por hash ---------- */
   var TABS = [
-    ["ruta", "Ruta 20′"], ["resumen", "Resumen"], ["contexto", "Contexto"], ["mapa", "Mapa"], ["esquema", "Esquema"],
+    ["ruta", "Ruta 20′"], ["juego", "Juego"], ["resumen", "Resumen"], ["contexto", "Contexto"], ["mapa", "Mapa"], ["esquema", "Esquema"],
     ["conceptos", "Conceptos"], ["casos", "Casos"], ["debate", "Debate"],
     ["tarjetas", "Tarjetas"], ["test", "Test"], ["ejercicios", "Ejercicios"], ["citas", "Citas"]
   ];
@@ -1268,6 +1340,8 @@ window.TEXTOS.fanon = {
     clear(app);
     window.scrollTo(0, 0);
     if (hsh === "metodo") return viewMethod();
+    if (hsh === "juego") return viewGame("");
+    if (hsh.indexOf("j-") === 0) return viewGame(hsh.slice(2));
     if (hsh.indexOf("s-") === 0) return viewSeminar(hsh.slice(2));
     if (hsh.indexOf("t-") === 0) {
       var parts = hsh.slice(2).split("-");
@@ -1295,6 +1369,7 @@ window.TEXTOS.fanon = {
     } else {
       chips.push(h("span", { class: "chip off" }, t.tarjetas.length + " tarjetas"));
     }
+    if (s.game && s.game.best) chips.push(h("span", { class: "chip medal " + (s.game.medal || "none") }, (s.game.medal ? s.game.medal[0].toUpperCase() + s.game.medal.slice(1) + " · " : "Juego · ") + s.game.best + " pts"));
     return h("div", { class: "chips" }, chips);
   }
   function textItem(id) {
@@ -1312,12 +1387,19 @@ window.TEXTOS.fanon = {
       h("span", { class: "eyebrow" }, "Estudio de textos"),
       h("h1", null, "Entiende un texto en 20 minutos"),
       h("p", null, "Cada texto tiene una ruta guiada: activar, panorama, estructura, conceptos, test y explicarlo con tus palabras. Después, tarjetas de repaso espaciado para que no se olvide."),
-      h("div", { class: "row" }, h("a", { class: "btn ghost", href: "#metodo" }, "Cómo funciona el método"))
+      h("div", { class: "row" },
+        h("a", { class: "btn primary", href: "#juego" }, "Jugar con todos los textos"),
+        h("a", { class: "btn ghost", href: "#metodo" }, "Cómo funciona el método")),
+      (function () {
+        var pr = gProfile(); if (!pr.xp) return null;
+        var L = gLevel(pr.xp);
+        return h("div", { class: "g-mini" }, h("span", null, "Nivel " + L.lvl), h("div", { class: "meter" }, h("i", { style: "width:" + Math.round(L.into / L.need * 100) + "%" })), h("span", null, (pr.days || 0) + (pr.days === 1 ? " día" : " días") + " seguidos"));
+      })()
     ));
     SEMS.forEach(function (s) {
       var head = h("div", { class: "sem-head" },
         h("div", null, h("span", { class: "eyebrow" }, s.tema), h("h2", null, s.nombre)),
-        s.textos.length > 1 ? h("a", { href: "#s-" + s.id, class: "small" }, "Comparar y sintetizar →") : null
+        s.textos.length > 1 ? h("div", { class: "row" }, h("a", { href: "#j-" + s.id, class: "small" }, "Jugar mezclados"), h("a", { href: "#s-" + s.id, class: "small" }, "Comparar y sintetizar →")) : null
       );
       var list = s.textos.length
         ? s.textos.filter(function (id) { return TXT[id]; }).map(textItem)
@@ -1348,7 +1430,7 @@ window.TEXTOS.fanon = {
     var body = h("div", { class: "stack-l" });
     add(app, body);
     var fn = {
-      ruta: tabRuta, resumen: tabResumen, contexto: t.cronologia ? tabContexto : null, mapa: tabMapa, esquema: tabEsquema, conceptos: tabConceptos,
+      ruta: tabRuta, juego: tabJuego, resumen: tabResumen, contexto: t.cronologia ? tabContexto : null, mapa: tabMapa, esquema: tabEsquema, conceptos: tabConceptos,
       casos: tabCasos, debate: tabDebate, tarjetas: tabTarjetas, test: tabTest, ejercicios: tabEjercicios, citas: tabCitas
     }[tab] || tabResumen;
     fn(t, body);
@@ -1835,7 +1917,8 @@ window.TEXTOS.fanon = {
           h("li", null, h("strong", null, "En una semana (15 min):"), " ejercicios de ensayo y la comparación del seminario."),
           h("li", null, h("strong", null, "Antes del seminario:"), " test mixto del seminario y las citas clave.")),
         h("div", { class: "row" },
-          h("button", { class: "btn primary", onclick: function () { go("t-" + t.id + "-ejercicios"); } }, "Ir a los ejercicios"),
+          h("button", { class: "btn primary", onclick: function () { go("t-" + t.id + "-juego"); } }, "Jugar ahora"),
+          h("button", { class: "btn", onclick: function () { go("t-" + t.id + "-ejercicios"); } }, "Ir a los ejercicios"),
           h("button", { class: "btn", onclick: function () { go(""); } }, "Volver al inicio"))
       ));
       toast("Ruta guardada. Repaso: mañana.");
@@ -1879,6 +1962,412 @@ window.TEXTOS.fanon = {
     paintStep();
   }
 
+  /* ---------- JUEGO ---------- */
+  // Partida de 12 retos generados del contenido de uno o varios textos.
+  // Recompensas: puntos por rapidez, rachas que multiplican, preguntas doradas (x2),
+  // vidas, récords, medallas, XP con niveles y racha de días.
+  var G_TOTAL = 12, G_LIVES = 3;
+  function gProfile() {
+    mem._game = mem._game || { xp: 0, days: 0, last: "", sound: true };
+    return mem._game;
+  }
+  function gLevel(xp) {
+    var lvl = 1, need = 300;
+    while (xp >= need) { xp -= need; lvl++; need = 300 + (lvl - 1) * 150; }
+    return { lvl: lvl, into: xp, need: need };
+  }
+  function gMedal(acc) { return acc >= 90 ? "oro" : acc >= 75 ? "plata" : acc >= 50 ? "bronce" : ""; }
+  function gRank(acc) { return acc >= 90 ? "Maestría" : acc >= 75 ? "Muy bien" : acc >= 50 ? "Vas bien" : "Calentando"; }
+  function short(s, n) { s = String(s).replace(/\*\*/g, ""); return s.length > n ? s.slice(0, n - 1).replace(/\s+\S*$/, "") + "…" : s; }
+  function pick(a, n, not) {
+    return shuffle(a.filter(function (x) { return x !== not; })).slice(0, n);
+  }
+
+  /* Sonido: tonos cortos con WebAudio, solo tras interacción */
+  var actx = null;
+  function beep(freqs, dur, type) {
+    if (!gProfile().sound) return;
+    try {
+      actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+      var t0 = actx.currentTime;
+      freqs.forEach(function (f, i) {
+        var o = actx.createOscillator(), g = actx.createGain();
+        o.type = type || "sine"; o.frequency.value = f;
+        g.gain.setValueAtTime(0.0001, t0 + i * dur);
+        g.gain.exponentialRampToValueAtTime(0.18, t0 + i * dur + 0.01);
+        g.gain.exponentialRampToValueAtTime(0.0001, t0 + (i + 1) * dur);
+        o.connect(g); g.connect(actx.destination);
+        o.start(t0 + i * dur); o.stop(t0 + (i + 1) * dur + 0.02);
+      });
+    } catch (e) { /* sin audio */ }
+  }
+  function sfxRight(combo) { var b = 520 * Math.pow(1.06, Math.min(combo, 12)); beep([b, b * 1.25], 0.07, "triangle"); }
+  function sfxWrong() { beep([220, 160], 0.12, "sawtooth"); }
+  function sfxBig() { beep([523, 659, 784, 1047], 0.09, "triangle"); }
+  function buzz(ms) { try { if (navigator.vibrate) navigator.vibrate(ms); } catch (e) { /* nada */ } }
+  var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* Confeti en canvas */
+  function confetti(amount) {
+    if (reduced) return;
+    var cv = h("canvas", { class: "confetti", "aria-hidden": "true" });
+    document.body.appendChild(cv);
+    var W = cv.width = window.innerWidth, H = cv.height = window.innerHeight, ctx = cv.getContext("2d");
+    var cs = getComputedStyle(document.documentElement);
+    var cols = ["--b1", "--b2", "--b3", "--b4", "--b5", "--gold"].map(function (v) { return cs.getPropertyValue(v).trim() || "#888"; });
+    var ps = [];
+    for (var i = 0; i < (amount || 120); i++) {
+      ps.push({ x: W / 2 + (Math.random() - 0.5) * W * 0.3, y: H * 0.35, vx: (Math.random() - 0.5) * 14, vy: -Math.random() * 14 - 4,
+        r: Math.random() * 6 + 4, c: cols[i % cols.length], a: Math.random() * 6, va: (Math.random() - 0.5) * 0.4 });
+    }
+    var start = performance.now();
+    (function frame(now) {
+      ctx.clearRect(0, 0, W, H);
+      ps.forEach(function (p) {
+        p.vy += 0.4; p.x += p.vx; p.y += p.vy; p.vx *= 0.99; p.a += p.va;
+        ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.a); ctx.fillStyle = p.c;
+        ctx.fillRect(-p.r / 2, -p.r / 4, p.r, p.r / 2); ctx.restore();
+      });
+      if (now - start < 1800) requestAnimationFrame(frame); else cv.remove();
+    })(start);
+  }
+
+  /* Generador de retos a partir de los datos del texto */
+  function makeChallenges(texts) {
+    var multi = texts.length > 1, pool = [];
+    texts.forEach(function (t) {
+      var tag = t.autor;
+      t.test.forEach(function (q) {
+        if (typeof q.v === "boolean") pool.push({ kind: "vf", src: tag, q: q.q, o: ["Verdadero", "Falso"], r: q.v ? 0 : 1, x: q.x, fixed: true, time: 9 });
+        else pool.push({ kind: "mc", src: tag, q: q.q, o: q.o, r: q.r, x: q.x, time: 16 });
+      });
+      t.tarjetas.forEach(function (c) {
+        var others = pick(t.tarjetas, 2, c).map(function (o) { return o.a; });
+        pool.push({ kind: "mc", label: "Tarjeta", src: tag, q: c.q, o: [c.a].concat(others), r: 0, x: "", time: 18 });
+      });
+      t.conceptos.forEach(function (c) {
+        var others = pick(t.conceptos, 3, c);
+        pool.push({ kind: "mc", label: "¿Qué término es?", src: tag, q: short(c.d, 170), o: [c.t].concat(others.map(function (o) { return o.t; })), r: 0, x: "**" + c.t + "**: " + c.d, time: 14 });
+        var fake = Math.random() < 0.5, other = others[0];
+        pool.push({ kind: "vf", label: "Relámpago", src: tag, q: "**" + c.t + "**: " + short(fake ? other.d : c.d, 150), o: ["Verdadero", "Falso"], r: fake ? 1 : 0, fixed: true,
+          x: fake ? "Esa es la definición de **" + other.t + "**." : "Correcto: es su definición.", time: 8 });
+      });
+      if (t.conceptos.length >= 4) {
+        for (var k = 0; k < 3; k++) pool.push({ kind: "match", src: tag, pairs: pick(t.conceptos, 4), time: 40 });
+      }
+      t.casos.forEach(function (c) {
+        if (t.casos.length < 3) return;
+        var others = pick(t.casos, 2, c);
+        pool.push({ kind: "mc", label: "Caso", src: tag, q: "¿Qué prueba **" + c.n + "**?", o: [c.prueba].concat(others.map(function (o) { return o.prueba; })), r: 0, x: c.d, time: 20 });
+      });
+      var obs = t.argumento.filter(function (a) { return a.k === "objecion"; });
+      var res = t.argumento.filter(function (a) { return a.k === "respuesta"; });
+      if (obs.length >= 2 && res.length >= 2) {
+        obs.forEach(function (o) {
+          var i = t.argumento.indexOf(o), ans = t.argumento[i + 1];
+          if (!ans || ans.k !== "respuesta") return;
+          pool.push({ kind: "mc", label: "Réplica", src: tag, q: "Objeción: " + o.t + " ¿Qué responde el texto?", o: [ans.t].concat(pick(res, 2, ans).map(function (x) { return x.t; })), r: 0, x: "", time: 20 });
+        });
+      }
+      if (t.cronologia && t.cronologia.length >= 4) {
+        for (var j = 0; j < 3; j++) pool.push({ kind: "order", src: tag, items: pick(t.cronologia, 4), time: 30 });
+      }
+      if (multi) {
+        t.citas.forEach(function (c) {
+          pool.push({ kind: "mc", label: "¿Quién lo dijo?", src: "", q: "«" + c.c + "»", o: texts.map(function (x) { return x.autor; }), r: texts.indexOf(t), x: c.n, fixed: true, time: 12 });
+        });
+      }
+    });
+    // Mezcla equilibrada por tipo, para que la partida sea variada
+    var byKind = {};
+    shuffle(pool).forEach(function (c) { (byKind[c.kind + (c.label || "")] = byKind[c.kind + (c.label || "")] || []).push(c); });
+    var keys = Object.keys(byKind), out = [], ki = 0;
+    while (out.length < G_TOTAL + 6 && keys.some(function (k) { return byKind[k].length; })) {
+      var k2 = keys[ki++ % keys.length];
+      if (byKind[k2].length) out.push(byKind[k2].pop());
+    }
+    out = shuffle(out);
+    out.forEach(function (c) { c.gold = Math.random() < 0.13; });
+    return out;
+  }
+
+  function gameView(texts, key, title) {
+    var root = h("div", { class: "game" });
+    var prof = gProfile();
+    var ivTimer = null;
+
+    function stopTimer() { if (ivTimer) { clearInterval(ivTimer); ivTimer = null; } }
+
+    function intro() {
+      stopTimer();
+      clear(root);
+      var gs = st(key).game || {};
+      var L = gLevel(prof.xp);
+      add(root,
+        h("div", { class: "g-hero" },
+          h("span", { class: "eyebrow" }, title),
+          h("h2", null, "¿Cuánto aguantas?"),
+          h("div", { class: "g-stats" },
+            h("div", null, h("b", null, gs.best || 0), h("span", null, "récord")),
+            h("div", null, h("b", null, gs.medal ? gs.medal : "—"), h("span", null, "medalla")),
+            h("div", null, h("b", null, "Nv " + L.lvl), h("span", null, "nivel")),
+            h("div", null, h("b", null, prof.days || 0), h("span", null, "días seguidos"))),
+          h("ul", { class: "g-rules" },
+            h("li", null, "12 retos · 3 vidas"),
+            h("li", null, "Rápido = más puntos"),
+            h("li", null, "Encadena aciertos: x2, x3, x4"),
+            h("li", null, "Pregunta dorada: puntos dobles")),
+          h("div", { class: "row" },
+            h("button", { class: "btn primary g-play", onclick: play }, "Jugar"),
+            h("button", { class: "btn ghost", onclick: function () { prof.sound = !prof.sound; saveStore(); intro(); } }, prof.sound ? "Sonido: sí" : "Sonido: no"))));
+    }
+
+    function play() {
+      var deck = makeChallenges(texts);
+      var S = { i: 0, lives: G_LIVES, score: 0, combo: 0, maxCombo: 0, right: 0, done: 0, wrongs: [] };
+      var hud = h("div", { class: "g-hud" });
+      var stage = h("div", { class: "g-stage" });
+      clear(root); add(root, hud, stage);
+      beep([440], 0.05);
+
+      function mult() { return S.combo >= 10 ? 4 : S.combo >= 6 ? 3 : S.combo >= 3 ? 2 : 1; }
+      function paintHud(pop) {
+        clear(hud);
+        var hearts = h("span", { class: "g-lives", "aria-label": S.lives + " vidas" });
+        for (var i = 0; i < G_LIVES; i++) add(hearts, h("i", { class: i < S.lives ? "on" : "off" }));
+        add(hud,
+          hearts,
+          h("span", { class: "g-prog" }, Math.min(S.i + 1, G_TOTAL) + "/" + G_TOTAL),
+          h("span", { class: "g-combo m" + mult() + (pop ? " pop" : "") }, "x" + mult(), h("small", null, S.combo ? " · racha " + S.combo : "")),
+          h("span", { class: "g-score" + (pop ? " pop" : "") }, S.score));
+      }
+      function floatPts(anchor, txt, cls) {
+        var f = h("div", { class: "g-float " + (cls || "") }, txt);
+        anchor.appendChild(f);
+        setTimeout(function () { f.remove(); }, 900);
+      }
+      function banner(txt, cls) {
+        var b = h("div", { class: "g-banner " + (cls || "") }, txt);
+        root.appendChild(b);
+        setTimeout(function () { b.remove(); }, 1300);
+      }
+
+      function resolve(ok, c, card, frac, explain) {
+        stopTimer();
+        S.done++;
+        if (ok) {
+          S.right++; S.combo++; S.maxCombo = Math.max(S.maxCombo, S.combo);
+          var pts = Math.round((100 + 100 * Math.max(0, frac)) * mult() * (c.gold ? 2 : 1));
+          S.score += pts;
+          paintHud(true);
+          floatPts(card, "+" + pts, c.gold ? "gold" : "");
+          sfxRight(S.combo); buzz(15);
+          card.classList.add("g-ok");
+          if (S.combo === 3 || S.combo === 6 || S.combo === 10) { banner("Racha " + S.combo + " · x" + mult(), "combo"); sfxBig(); confetti(S.combo * 12); }
+          setTimeout(next, 850);
+        } else {
+          S.combo = 0; S.lives--; S.wrongs.push(c);
+          paintHud(false);
+          sfxWrong(); buzz([40, 40, 40]);
+          card.classList.add("g-ko");
+          add(card, h("div", { class: "feedback ko", html: "<strong>" + (frac < 0 ? "Tiempo." : "Fallo.") + "</strong> " + (explain || "") }),
+            h("button", { class: "btn primary", onclick: next }, S.lives > 0 ? "Seguir" : "Ver resultado"));
+          var btn = card.querySelector(".btn.primary:last-child"); if (btn) btn.focus();
+        }
+      }
+
+      function timerBar(c, card, onTimeout) {
+        var bar = h("div", { class: "g-timer" }, h("i"));
+        var total = c.time * 1000, t0 = Date.now();
+        ivTimer = setInterval(function () {
+          var left = 1 - (Date.now() - t0) / total;
+          bar.firstChild.style.width = Math.max(0, left * 100) + "%";
+          bar.classList.toggle("low", left < 0.3);
+          if (left <= 0) { stopTimer(); onTimeout(); }
+        }, 80);
+        timers.push(ivTimer);
+        return { el: bar, frac: function () { return 1 - (Date.now() - t0) / total; } };
+      }
+
+      function head(c) {
+        var lbl = c.kind === "vf" ? (c.label || "Verdadero o falso") : c.kind === "match" ? "Empareja" : c.kind === "order" ? "Ordena en el tiempo" : (c.label || "Pregunta");
+        return h("div", { class: "row", style: "justify-content:space-between" },
+          h("span", { class: "eyebrow" }, lbl, c.gold ? h("span", { class: "g-gold" }, " · dorada x2") : null),
+          texts.length > 1 && c.src ? h("span", { class: "src-tag" }, c.src) : null);
+      }
+
+      function renderChoice(c) {
+        var card = h("div", { class: "card stack g-card" + (c.gold ? " gold" : "") });
+        var idx = c.o.map(function (_, i) { return i; });
+        var order = c.fixed ? idx : shuffle(idx);
+        var locked = false;
+        var tb = timerBar(c, card, function () { if (!locked) { locked = true; mark(-1); resolve(false, c, card, -1, rightTxt()); } });
+        function rightTxt() { return "Era: <em>" + md(short(c.o[c.r], 220)) + "</em>" + (c.x ? "<br>" + md(c.x) : ""); }
+        var btns = order.map(function (oi) {
+          return h("button", { class: "opt", html: md(c.o[oi]), onclick: function (e) {
+            if (locked) return; locked = true;
+            var ok = oi === c.r;
+            mark(ok ? -2 : oi, e.currentTarget);
+            resolve(ok, c, card, tb.frac(), ok ? "" : rightTxt());
+          } });
+        });
+        function mark(chosen, el) {
+          btns.forEach(function (b, k) { b.disabled = true; if (order[k] === c.r) b.classList.add("right"); });
+          if (chosen >= 0 && el) el.classList.add("wrong");
+        }
+        add(card, head(c), tb.el, h("div", { class: "qtext", html: md(c.q) }), h("div", { class: "opts" + (c.kind === "vf" ? " vf" : "") }, btns));
+        return card;
+      }
+
+      function renderMatch(c) {
+        var card = h("div", { class: "card stack g-card" + (c.gold ? " gold" : "") });
+        var terms = shuffle(c.pairs), defs = shuffle(c.pairs);
+        var sel = null, found = 0, misses = 0, done = false;
+        var tb = timerBar(c, card, function () { if (!done) { done = true; resolve(false, c, card, -1, solution()); } });
+        function solution() { return c.pairs.map(function (p) { return "<br><strong>" + esc(p.t) + "</strong>: " + md(short(p.d, 110)); }).join(""); }
+        var tBtns = terms.map(function (p) {
+          var b = h("button", { class: "g-chip", onclick: function () {
+            if (done || b.disabled) return;
+            tBtns.forEach(function (x) { x.classList.remove("sel"); });
+            sel = p; b.classList.add("sel");
+          } }, p.t);
+          b._p = p; return b;
+        });
+        var dBtns = defs.map(function (p) {
+          var b = h("button", { class: "opt small-opt", html: md(short(p.d, 120)), onclick: function () {
+            if (done || !sel || b.disabled) return;
+            if (sel === p) {
+              found++; b.disabled = true; b.classList.add("right");
+              tBtns.forEach(function (x) { if (x._p === p) { x.disabled = true; x.classList.remove("sel"); x.classList.add("done"); } });
+              sel = null; beep([660 + found * 60], 0.05, "triangle");
+              if (found === c.pairs.length) { done = true; resolve(misses <= 1, c, card, tb.frac(), solution()); }
+            } else {
+              misses++; b.classList.add("shake"); setTimeout(function () { b.classList.remove("shake"); }, 400);
+              beep([200], 0.08, "sawtooth");
+              if (misses > 2) { done = true; resolve(false, c, card, 0, "Demasiados fallos. Solución:" + solution()); }
+            }
+          } });
+          return b;
+        });
+        add(card, head(c), tb.el, h("div", { class: "qtext" }, "Toca un término y luego su definición"),
+          h("div", { class: "g-chips" }, tBtns), h("div", { class: "opts" }, dBtns),
+          h("p", { class: "muted small" }, "Máximo 1 fallo para que cuente como acierto."));
+        return card;
+      }
+
+      function renderOrder(c) {
+        var card = h("div", { class: "card stack g-card" + (c.gold ? " gold" : "") });
+        var correct = c.items.slice().sort(function (a, b) { return String(a.a).localeCompare(String(b.a)); });
+        var picked = [], done = false;
+        var tb = timerBar(c, card, function () { if (!done) { done = true; resolve(false, c, card, -1, sol()); } });
+        function sol() { return correct.map(function (x) { return "<br><strong>" + esc(x.a) + "</strong> " + md(short(x.t, 90)); }).join(""); }
+        var list = h("div", { class: "opts" });
+        var btns = shuffle(c.items).map(function (it) {
+          var b = h("button", { class: "opt", html: md(short(it.t, 120)), onclick: function () {
+            if (done || b.disabled) return;
+            picked.push(it); b.disabled = true;
+            var pos = picked.length;
+            b.insertBefore(h("span", { class: "g-num" }, pos), b.firstChild);
+            if (correct[pos - 1] !== it && correct[pos - 1].a !== it.a) {
+              done = true; b.classList.add("wrong"); resolve(false, c, card, 0, "Orden correcto:" + sol());
+            } else {
+              b.classList.add("right"); beep([600 + pos * 80], 0.05, "triangle");
+              if (pos === correct.length) { done = true; resolve(true, c, card, tb.frac()); }
+            }
+          } });
+          return b;
+        });
+        add(list, btns);
+        add(card, head(c), tb.el, h("div", { class: "qtext" }, "Toca los hechos del más antiguo al más reciente"), list);
+        return card;
+      }
+
+      function next() {
+        stopTimer();
+        if (S.lives <= 0 || S.i >= G_TOTAL || S.i >= deck.length) return end();
+        var c = deck[S.i];
+        S.i++;
+        paintHud(false);
+        clear(stage);
+        var card = c.kind === "match" ? renderMatch(c) : c.kind === "order" ? renderOrder(c) : renderChoice(c);
+        add(stage, card);
+        if (c.gold) { banner("Pregunta dorada", "gold"); beep([880, 1175], 0.06, "triangle"); }
+      }
+
+      function end() {
+        stopTimer();
+        var acc = S.done ? Math.round((S.right / S.done) * 100) : 0;
+        var survived = S.lives > 0;
+        if (survived) S.score += S.lives * 150;
+        var gs = st(key).game || { best: 0, plays: 0, medal: "" };
+        var record = S.score > (gs.best || 0);
+        var medal = survived ? gMedal(acc) : "";
+        var rankOrder = ["", "bronce", "plata", "oro"];
+        gs.best = Math.max(gs.best || 0, S.score);
+        gs.plays = (gs.plays || 0) + 1;
+        if (rankOrder.indexOf(medal) > rankOrder.indexOf(gs.medal || "")) gs.medal = medal;
+        st(key).game = gs;
+        // XP, nivel y racha de días
+        var before = gLevel(prof.xp);
+        var gained = Math.round(S.score / 10);
+        prof.xp += gained;
+        var after = gLevel(prof.xp);
+        var td = today();
+        if (prof.last !== td) { prof.days = prof.last === today(-1) ? (prof.days || 0) + 1 : 1; prof.last = td; }
+        saveStore();
+
+        clear(root);
+        var bar = h("div", { class: "meter g-xp" }, h("i", { style: "width:" + Math.round((before.lvl === after.lvl ? before.into : 0) / after.need * 100) + "%" }));
+        add(root, h("div", { class: "card stack g-end" },
+          h("span", { class: "eyebrow" }, survived ? "Partida completada" : "Sin vidas"),
+          h("div", { class: "g-final" }, h("span", { class: "score", "data-to": S.score }, "0"), record ? h("span", { class: "g-record" }, "Nuevo récord") : null),
+          h("p", null, gRank(acc) + " · " + acc + "% de aciertos · racha máxima " + S.maxCombo + (survived ? " · +" + S.lives * 150 + " por vidas" : "")),
+          medal ? h("div", { class: "g-medal " + medal }, "Medalla de " + medal) : null,
+          h("div", { class: "stack", style: "gap:6px" },
+            h("div", { class: "row", style: "justify-content:space-between" }, h("span", { class: "eyebrow" }, "Nivel " + after.lvl), h("span", { class: "src-tag" }, "+" + gained + " XP")),
+            bar),
+          S.wrongs.length ? h("details", { class: "sec" }, h("summary", null, "Repasa tus fallos (" + S.wrongs.length + ")"),
+            h("ul", null, S.wrongs.map(function (w) {
+              if (w.kind === "match") return h("li", null, "Emparejar: " + w.pairs.map(function (p) { return p.t; }).join(", "));
+              if (w.kind === "order") return h("li", null, "Cronología: " + w.items.slice().sort(function (a, b) { return String(a.a).localeCompare(String(b.a)); }).map(function (x) { return x.a; }).join(" → "));
+              return h("li", { html: md(short(w.q, 140)) + " → <strong>" + md(short(w.o[w.r], 140)) + "</strong>" });
+            }))) : null,
+          h("div", { class: "row" },
+            h("button", { class: "btn primary g-play", onclick: play }, "Otra partida"),
+            h("button", { class: "btn ghost", onclick: intro }, "Salir"))));
+        // contador animado
+        var sc = root.querySelector("[data-to]"), to = S.score, t0 = performance.now();
+        (function tick(now) {
+          var k = Math.min(1, (now - t0) / (reduced ? 1 : 900));
+          sc.textContent = Math.round(to * (1 - Math.pow(1 - k, 3)));
+          if (k < 1) requestAnimationFrame(tick);
+        })(t0);
+        setTimeout(function () {
+          bar.firstChild.style.width = Math.round(after.into / after.need * 100) + "%";
+          if (after.lvl > before.lvl) { banner("Subes a nivel " + after.lvl, "combo"); sfxBig(); confetti(160); }
+          else if (record || medal === "oro") { sfxBig(); confetti(110); }
+        }, 500);
+      }
+
+      next();
+    }
+
+    intro();
+    return root;
+  }
+  function tabJuego(t, el) { add(el, gameView([t], t.id, t.autor + " · " + t.titulo)); }
+  function viewGame(semId) {
+    var s = SEMS.filter(function (x) { return x.id === semId; })[0];
+    var ids = s ? s.textos : SEMS.reduce(function (a, x) { return a.concat(x.textos); }, []);
+    var texts = ids.filter(function (id) { return TXT[id]; }).map(function (id) { return TXT[id]; });
+    setCrumb(s ? [[s.nombre, "s-" + s.id], ["Juego"]] : [["Juego"]]);
+    add(app, h("header", { class: "thead" },
+      h("span", { class: "eyebrow" }, "Partida mixta"),
+      h("h1", null, s ? "Juego: " + s.nombre : "Juego: todos los textos"),
+      h("p", { class: "es" }, "Retos de " + texts.map(function (t) { return t.autor; }).join(", ") + " mezclados. Incluye «¿Quién lo dijo?».")));
+    add(app, gameView(texts, s ? "game-" + s.id : "game-all", "Partida mixta"));
+  }
+
   /* ---------- vista: seminario ---------- */
   function viewSeminar(id) {
     var s = SEMS.filter(function (x) { return x.id === id; })[0];
@@ -1891,6 +2380,7 @@ window.TEXTOS.fanon = {
     var el = h("div", { class: "stack-l" });
     add(app, el);
     add(el, h("div", { class: "stack" }, s.textos.filter(function (x) { return TXT[x]; }).map(textItem)));
+    if (s.textos.length > 1) add(el, h("div", { class: "row" }, h("a", { class: "btn primary", href: "#j-" + s.id }, "Jugar con los " + s.textos.length + " textos mezclados")));
     if (s.comparacion) {
       add(el, section("Comparación", "Las dos lecturas, punto por punto."));
       add(el, h("div", { class: "tablebox" }, h("table", null,

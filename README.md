@@ -9,6 +9,7 @@ App minimalista para entender un texto de seminario en unos 20 minutos y no olvi
 | Herramienta | Para qué |
 |---|---|
 | **Ruta 20′** | Sesión guiada con cronómetro: Activa (2′) → Panorama (3′) → Estructura (5′) → Conceptos y casos (3′) → Recupera (5′) → Explica (2′) |
+| **Juego** | 12 retos generados del texto (preguntas, verdadero/falso relámpago, emparejar conceptos, casos, réplicas, cronología): 3 vidas, puntos por rapidez, rachas x2–x4, preguntas doradas, récords, medallas, niveles y días seguidos. Hay partida mixta por seminario y con todos los textos |
 | Resumen | Tesis en una frase, el texto en un párrafo y resumen sección por sección |
 | Contexto | Cronología histórica (solo en los textos que la tienen) |
 | Mapa | Mapa mental plegable (y vista de lista) |
